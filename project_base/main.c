@@ -25,40 +25,25 @@
 #include "ps2.h"
 #include "launchpad_io.h"
 #include "lcd.h"
-#define SetBit(j, k, x) (pixels[(j/8)][k] |= (x << (j%8))) // Use byte array as a bit array to save space
-
-
+//#define SetBit(j, k, x) (pixels[(j/8)][k] |= (x << (j%8))) // Use byte array as a bit array to save space
 
 char group[] = "Group33";
 char individual_1[] = "Jackson Melchert";
 char individual_2[] = "Nicholas Cook";
 
 volatile bool SW1_pressed; // Global for SW1
-volatile bool analogConvert; // Global for adc convertion
-volatile bool refreshPlayer;
-volatile bool refreshAliens;
+volatile bool analogConvert; // Global for adc convertion (setting new spaceship location)
+volatile bool refreshAliens; // Set every 20 Timer0Bs
 int32_t xVal, yVal; // X and Y values of joystick
 uint16_t xPos, yPos; // Current pixel position
-uint8_t pixels[30][320]; // Array of on pixels
-
-
-// FSM states
-typedef enum 
-{
-  DRAW,
-	MOVE,
-	ERASE
-} ETCH_MODES;
-
+//uint8_t pixels[30][320]; // Array of on pixels
 
 
 // Timer0A Handler, used for Blue LED and SW1 debounce
 void TIMER0A_Handler(void) {
-		
-	// Counters for debouncing and flashing the led
+	// Counters for debouncing
 	static uint8_t button_count = 0;
 
-	
 	// Increment the counter for debouncing
 	if (!lp_io_read_pin(SW1_BIT)) {
 		button_count++;
@@ -73,31 +58,25 @@ void TIMER0A_Handler(void) {
 		SW1_pressed = false;
 	}
 	
-
-
 	clearInterrupt(TIMER0_BASE, true);
 	
 	return;
-	
 }
 
-// Timer0B Handler, used for Green led and ADC
+// Timer0B Handler, used for ADC
 void TIMER0B_Handler(void) {
-	
-	static uint8_t Alien_count = 0;
+	static uint8_t alien_count = 0;
+
 	ADC0_Type  *myADC;
-	
 	myADC = (ADC0_Type *)PS2_ADC_BASE;	
 
-	refreshPlayer = true;
-	// Increment the counter for debouncing
-	if (Alien_count == 4) {
+	// delay buffer for displaying next row of aliens
+	if (alien_count == 20) {
 		refreshAliens = true;
-		Alien_count = 0;
+		alien_count = 0;
 	} else {
-		Alien_count++;
+		alien_count++;
 	}
-	
 	
 	// Enable SS2
 	myADC->PSSI |= ADC_PSSI_SS2;
@@ -105,13 +84,10 @@ void TIMER0B_Handler(void) {
 	clearInterrupt(TIMER0_BASE, false);
 	
 	return;
-	
 }
 
-
+// ADC interrupt handler for analog conversion
 void ADC0SS2_Handler(void) {
-	
-	
 	ADC0_Type  *myADC;
 	analogConvert = true; // Set global variable
 	
@@ -120,11 +96,11 @@ void ADC0SS2_Handler(void) {
 	// Clear interrupt
 	myADC->ISC |= ADC_ISC_IN2;
 	
+	return;
 }
 
 // Read joystick values
 void readPS2() {
-	
 	ADC0_Type  *myADC;
 	myADC = (ADC0_Type *)PS2_ADC_BASE;
 	
@@ -135,16 +111,13 @@ void readPS2() {
 	myADC->SSMUX2 = PS2_Y_ADC_CHANNEL;
 	yVal = myADC->SSFIFO2 & 0xFFF;
 	
+	return;
 }
 
-
-
 //*****************************************************************************
 //*****************************************************************************
-void initialize_hardware(void)
-{
+void initialize_hardware(void) {
   initialize_serial_debug();
-	
 	
 	// Initialize adc for the joystick
 	adc0_ps2_initialize();
@@ -160,16 +133,18 @@ void initialize_hardware(void)
 	lcd_config_screen();
 }
 
-
 //*****************************************************************************
 //*****************************************************************************
 int 
 main(void)
 {
-	
+	uint8_t randomBit;
+	uint8_t alienShoot;
+	uint8_t columnCount = 239;
+	uint8_t bottomAlien_x = 239;
+	uint8_t bottomAlien_y = 319;
 
   initialize_hardware();
-	
 	
   put_string("\n\r");
   put_string("************************************\n\r");
@@ -182,42 +157,89 @@ main(void)
   put_string("\n\r");  
   put_string("************************************\n\r");
 
-	// Clear screen and set starting position to the middle
+	// Clear screen and set spaceship starting position
 	lcd_clear_screen(LCD_COLOR_BLACK);
 	xPos = 120;
-	yPos = 160;
-	
-
-	
+	yPos = 10;
 
 	lcd_draw_image(100, scoresWidthPixels, 200, scoresHeightPixels, scoresBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 
-	
-  // Reach infinite loop
-  while(1){
+  // Main loop
+  while(1) {
 		
+		// Displaying new row of aliens at top of LCD
+		// TODO: Previous row is moved down
 		if (refreshAliens) {
 			refreshAliens = false;
-			lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-			lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+
+			//lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+			//lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+
+			// Attempt to display row of "random" aliens
+			while(columnCount > alienWidthPixels) { //alien has largest width
+				randomBit = rand() % 2;
+
+				if(randomBit == 0) {
+					lcd_draw_image(bottomAlien_x, alienWidthPixels, bottomAlien_y, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+					lcd_draw_image(bottomAlien_x, alienWidthPixels, bottomAlien_y, alienHeightPixels, alienBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+
+					columnCount -= alienWidthPixels;
+				}
+				else if(randomBit == 1) {
+					lcd_draw_image(bottomAlien_x, alien2WidthPixels, bottomAlien_y, alien2HeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+					lcd_draw_image(bottomAlien_x, alien2WidthPixels, bottomAlien_y, alien2HeightPixels, alienBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+
+					columnCount -= alien2WidthPixels;
+				}
+
+				bottomAlien_y--;
+
+			}//end while
+
 		}
 		
+		// Reading PS2 joystick for moving spaceship on screen
 		if (analogConvert) {
 			analogConvert = false;
 			
-		
 			readPS2();
 		
 			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 			
+			// joystick value scaled to -4 and left extreme, 0 in middle, and +4 at right extreme to add movement speed control
 			xVal = (xVal - 2048)/512;
 			yVal = (yVal - 2048)/512;
 
-			yPos += xVal;
-			xPos += yVal;
+			// if the spaceship is in bounds then change value via adjusted joystick value
+			if(yPos > 1 && yPos < 100) {
+				yPos += xVal;
+			}
+			if(xPos > 1 && xPos < 239) {
+				xPos += yVal;
+			}
+			else {
+				// else the position of the spaceship is unchanged
+			}
 
 			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+
+		}
+
+		// Read SW1 to determine if player will shoot missile
+		if(SW1_pressed) {
+			// Print missile to LCD and move upward at rate determined by TIMER0A interrupts
 			
 		}
+
+		// Bottom row of aliens randomly shoot missiles
+		alienShoot = rand() % 4;
+
+		if(alienShoot == 1) {
+			// Print alien missile to LCD and move downward at rate determined by TIMER0A interrupts
+
+		}
+
+		// Determine if a missile has hit the player or an alien and display the explosion image and erase the alein
+		// If player hit - game over
   }
 }
