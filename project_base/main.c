@@ -71,7 +71,7 @@ void TIMER0B_Handler(void) {
 	myADC = (ADC0_Type *)PS2_ADC_BASE;	
 
 	// delay buffer for displaying next row of aliens
-	if (alien_count == 20) {
+	if (alien_count == 20) {r
 		refreshAliens = true;
 		alien_count = 0;
 	} else {
@@ -123,7 +123,7 @@ void initialize_hardware(void) {
 	adc0_ps2_initialize();
 	
 	// Set timer0A and timer0B
-	gp_timer_config_16(TIMER0_BASE, 10000, 30000, 50, 50);
+	gp_timer_config_16(TIMER0_BASE, 10000, 30000, 50, 25);
 	
 	// Initialize GPIO for the switch and leds
 	lp_io_init_SW1_LED();
@@ -141,8 +141,18 @@ main(void)
 	uint8_t randomBit;
 	uint8_t alienShoot;
 	uint8_t columnCount = 239;
-	uint8_t bottomAlien_x = 239;
-	uint8_t bottomAlien_y = 319;
+	int alienStartingXPos = 120;
+	int alienStartingYPos = 250;
+	
+	// Arrays for the 16 bullets and their positions
+	int bulletXPos[16];
+	int bulletYPos[16];
+	bool bullets[16];
+	int bullet = 0; 
+	int i;
+	for (i = 0; i < 16; i++) {
+		bullets[i] = false;
+	}
 
   initialize_hardware();
 	
@@ -160,7 +170,7 @@ main(void)
 	// Clear screen and set spaceship starting position
 	lcd_clear_screen(LCD_COLOR_BLACK);
 	xPos = 120;
-	yPos = 10;
+	yPos = 160;
 
 	lcd_draw_image(100, scoresWidthPixels, 200, scoresHeightPixels, scoresBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 
@@ -196,6 +206,26 @@ main(void)
 
 			}//end while
 
+			//lcd_draw_image(alienStartingXPos, alienWidthPixels, alienStartingYPos--, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+		}
+		
+		if (SW1_pressed) {
+			SW1_pressed = false;
+			
+			// If 16 bullets are already on screen then erase the last one
+			if (bullets[bullet]) {
+				lcd_draw_image(bulletXPos[bullet], bulletWidthPixels, bulletYPos[bullet], bulletHeightPixels, bulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+			}
+			bullets[bullet] = true;
+			bulletXPos[bullet] = xPos + 12;
+			bulletYPos[bullet] = yPos + 23;
+			
+			// Loop around the array so that we can have infinite bullets
+			if (bullet == 15) {
+				bullet = 0;
+			} else {
+				bullet++;
+			}
 		}
 		
 		// Reading PS2 joystick for moving spaceship on screen
@@ -203,43 +233,29 @@ main(void)
 			analogConvert = false;
 			
 			readPS2();
-		
-			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+
+			xVal = (xVal - 2048)/1020;
+			yVal = (yVal - 2048)/1020;
+
+			if (xPos + yVal >= 0 && xPos + yVal <= 240 - spaceshipWidthPixels && yPos + xVal >= 0 && yPos + xVal <= 320 - spaceshipHeightPixels) {
 			
-			// joystick value scaled to -4 and left extreme, 0 in middle, and +4 at right extreme to add movement speed control
-			xVal = (xVal - 2048)/512;
-			yVal = (yVal - 2048)/512;
+			yPos += xVal;
+			xPos += yVal;
 
-			// if the spaceship is in bounds then change value via adjusted joystick value
-			if(yPos > 1 && yPos < 100) {
-				yPos += xVal;
 			}
-			if(xPos > 1 && xPos < 239) {
-				xPos += yVal;
-			}
-			else {
-				// else the position of the spaceship is unchanged
-			}
-
-			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
-
-		}
-
-		// Read SW1 to determine if player will shoot missile
-		if(SW1_pressed) {
-			// Print missile to LCD and move upward at rate determined by TIMER0A interrupts
+			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_CYAN, LCD_COLOR_BLACK);
 			
-		}
-
-		// Bottom row of aliens randomly shoot missiles
-		alienShoot = rand() % 4;
-
-		if(alienShoot == 1) {
-			// Print alien missile to LCD and move downward at rate determined by TIMER0A interrupts
-
-		}
-
-		// Determine if a missile has hit the player or an alien and display the explosion image and erase the alein
-		// If player hit - game over
+			for (i = 0; i < 16; i++){
+				if (bulletYPos[i] > 314) {
+					bullets[i] = false;
+					lcd_draw_image(bulletXPos[i], bulletWidthPixels, bulletYPos[i], bulletHeightPixels, bulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+				}
+				
+				if (bullets[i]){
+					bulletYPos[i] = bulletYPos[i] + 2; // Bullet speed
+					lcd_draw_image(bulletXPos[i], bulletWidthPixels, bulletYPos[i], bulletHeightPixels, bulletBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+				}
+			}
+		}	
   }
 }
