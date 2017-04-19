@@ -90,7 +90,7 @@ void TIMER0B_Handler(void) {
 	myADC = (ADC0_Type *)PS2_ADC_BASE;	
 
 	refreshPlayer = true;
-	// Increment the counter for debouncing
+	
 	if (Alien_count == 4) {
 		refreshAliens = true;
 		Alien_count = 0;
@@ -150,7 +150,7 @@ void initialize_hardware(void)
 	adc0_ps2_initialize();
 	
 	// Set timer0A and timer0B
-	gp_timer_config_16(TIMER0_BASE, 10000, 30000, 50, 50);
+	gp_timer_config_16(TIMER0_BASE, 10000, 30000, 50, 25);
 	
 	// Initialize GPIO for the switch and leds
 	lp_io_init_SW1_LED();
@@ -166,7 +166,8 @@ void initialize_hardware(void)
 int 
 main(void)
 {
-	
+	int alienStartingXPos = 120;
+	int alienStartingYPos = 250;
 
   initialize_hardware();
 	
@@ -187,7 +188,6 @@ main(void)
 	xPos = 120;
 	yPos = 160;
 	
-
 	
 
 	lcd_draw_image(100, scoresWidthPixels, 200, scoresHeightPixels, scoresBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
@@ -198,8 +198,7 @@ main(void)
 		
 		if (refreshAliens) {
 			refreshAliens = false;
-			lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-			lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+			lcd_draw_image(alienStartingXPos, alienWidthPixels, alienStartingYPos--, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 		}
 		
 		if (analogConvert) {
@@ -208,10 +207,10 @@ main(void)
 		
 			readPS2();
 		
-			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+			//lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 			
-			xVal = (xVal - 2048)/512;
-			yVal = (yVal - 2048)/512;
+			xVal = (xVal - 2048)/1020;
+			yVal = (yVal - 2048)/1020;
 
 			yPos += xVal;
 			xPos += yVal;
