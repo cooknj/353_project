@@ -11,9 +11,11 @@
 // ADD Code
 typedef __packed struct
 {
+	
 	uint8_t green;
 	uint8_t red;
 	uint8_t blue;
+	
 } WS2812B_t;
 
 /*******************************************************************************

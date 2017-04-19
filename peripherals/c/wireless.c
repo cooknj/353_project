@@ -65,7 +65,7 @@ static __INLINE void  wireless_CE_Pulse(void)
 //*****************************************************************************
 // ADD CODE
 // This function reads a single byte of data from the register at the 5-bit 
-// address specified by the lower 5 bits of paramter reg. 
+// address specificed by the lower 5 bits of paramter reg. 
 //
 // The value at that register is returned to the  user as a uint8_t.  
 //
@@ -81,15 +81,19 @@ static __INLINE void  wireless_CE_Pulse(void)
 //*****************************************************************************
 static __INLINE uint8_t wireless_reg_read(uint8_t reg)
 {
-	reg = reg & 0x1F;
-	reg = NRF24L01_CMD_R_REGISTER | reg;
+
+	uint8_t tx_data[2];
+	uint8_t rx_data[2];
+	
+	tx_data[0] = NRF24L01_CMD_R_REGISTER | (reg & 0x1F);
 	
 	wireless_CSN_low();
-	spiTx(RF_SPI_BASE, &reg, 1, &reg);
+	
+	spiTx(RF_SPI_BASE, tx_data, 1, rx_data);
+	
 	wireless_CSN_high();
 	
-	return reg;
-	
+	return rx_data[1];
 }
 
 //*****************************************************************************
@@ -109,16 +113,19 @@ static __INLINE uint8_t wireless_reg_read(uint8_t reg)
 //*****************************************************************************
 static __INLINE void wireless_reg_write(uint8_t reg, uint8_t data)
 {
+
 	uint8_t tx_data[2];
 	uint8_t rx_data[2];
-	reg = reg & 0x1F;
 	
-	tx_data[0] = NRF24L01_CMD_W_REGISTER | reg;
+	tx_data[0] = NRF24L01_CMD_W_REGISTER | (reg & 0x1F);
 	tx_data[1] = data;
 	
 	wireless_CSN_low();
-	spiTx(RF_SPI_BASE, tx_data, 2, rx_data);
+	
+	spiTx(RF_SPI_BASE, tx_data, 1, rx_data);
+	
 	wireless_CSN_high();
+	
 }
 
 
@@ -137,15 +144,16 @@ static __INLINE void wireless_reg_write(uint8_t reg, uint8_t data)
 //*****************************************************************************
 static __INLINE void wireless_set_tx_addr(uint8_t  *tx_addr)
 {
-	uint8_t tx_data[5];
+
 	uint8_t rx_data[5];
-	
-	tx_data[0] = NRF24L01_CMD_W_REGISTER | NRF24L01_TX_ADDR_R;
-	tx_data[1] = *tx_addr;
-	
+
+
 	wireless_CSN_low();
-	spiTx(RF_SPI_BASE, tx_data, 5, rx_data); 
+	
+	spiTx(RF_SPI_BASE, tx_addr, 1, rx_data);
+	
 	wireless_CSN_high();
+	
 }
 
 //*****************************************************************************
@@ -163,16 +171,21 @@ static __INLINE void wireless_set_tx_addr(uint8_t  *tx_addr)
 //*****************************************************************************
 static __INLINE void wireless_tx_data_payload( uint32_t data)
 {
+
 	uint8_t tx_data[5];
 	uint8_t rx_data[5];
 	
-	tx_data[0] = NRF24L01_CMD_W_TX_PAYLOAD;
+	tx_data[0] = NRF24L01_CMD_W_REGISTER | NRF24L01_TX_ADDR_R;
+
 	tx_data[1] = data;
 	
 	wireless_CSN_low();
-	spiTx(RF_SPI_BASE, tx_data, 5, rx_data);
+	
+	spiTx(RF_SPI_BASE, tx_data, 1, rx_data);
+	
 	wireless_CSN_high();
-
+	
+	
 }
 
 
@@ -192,15 +205,18 @@ static __INLINE void wireless_tx_data_payload( uint32_t data)
 //*****************************************************************************
 static __INLINE void wireless_rx_data_payload( uint32_t *data)
 {
-	uint8_t tx_data[5];
-	uint8_t rx_data[5];
+	
+	uint8_t tx_data[4];
+
 	
 	tx_data[0] = NRF24L01_CMD_R_RX_PAYLOAD;
 	
 	wireless_CSN_low();
-	spiTx(RF_SPI_BASE, tx_data, 5, rx_data);
-	wireless_CSN_high();
 	
+	spiTx(RF_SPI_BASE, tx_data, 1, (uint8_t*)data);
+	
+	wireless_CSN_high();
+		
 }
 
 //****************************************************************************

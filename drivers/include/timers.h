@@ -26,7 +26,7 @@
 //*****************************************************************************
 bool gp_timer_config_32(uint32_t base_addr, uint32_t mode, bool count_up, bool enable_interrupts);
 
-
+bool gp_timer_config_16(uint32_t base_addr, uint32_t ticksA, uint32_t ticksB, uint32_t prescaleA, uint32_t prescaleB);
 //*****************************************************************************
 // Waits for 'ticks' number of clock cycles and then returns.
 //
@@ -34,5 +34,6 @@ bool gp_timer_config_32(uint32_t base_addr, uint32_t mode, bool count_up, bool e
 //*****************************************************************************
 bool gp_timer_wait(uint32_t base_addr, uint32_t ticks);
 
+void clearInterrupt(uint32_t base_addr, bool A);
 
 #endif

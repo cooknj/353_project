@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include "TM4C123GH6PM.h"
 #include "driver_defines.h"
+#include "ps2.h"
 
 
 /******************************************************************************
@@ -41,7 +42,7 @@
  *****************************************************************************/
 bool initialize_adc(  uint32_t adc_base );
 
-
+bool initialize_adc0(  uint32_t adc_base );
 /******************************************************************************
  * Returns the analog reading for a given AIN channel.
  *

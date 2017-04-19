@@ -34,18 +34,36 @@
 *******************************************************************************/
 static void initialize_adc_gpio_pins(void)
 {
-	//enable gpio port
+	
 	gpio_enable_port(PS2_GPIO_BASE);
-	//configure pin as input
 	gpio_config_enable_input(PS2_GPIO_BASE, PS2_X_BIT_NUM);
-	gpio_config_enable_input(PS2_GPIO_BASE, PS2_Y_BIT_NUM);
-	//configure pins as analog input
 	gpio_config_analog_enable(PS2_GPIO_BASE, PS2_X_DIR_MASK);
-	gpio_config_analog_enable(PS2_GPIO_BASE, PS2_Y_DIR_MASK);
-	//configure pins as alternate function
 	gpio_config_alternate_function(PS2_GPIO_BASE, PS2_X_DIR_MASK);
+	gpio_config_enable_input(PS2_GPIO_BASE, PS2_Y_BIT_NUM);
+	gpio_config_analog_enable(PS2_GPIO_BASE, PS2_Y_DIR_MASK);
 	gpio_config_alternate_function(PS2_GPIO_BASE, PS2_Y_DIR_MASK);
-	initialize_adc(PS2_ADC_BASE);
+	initialize_adc(ADC0_BASE);
+	
+	
+}
+
+
+// Initialize adc ps2 ports
+void adc0_ps2_initialize(void)
+{
+	// Turn on and config ps2 ports for X and Y joystick
+	gpio_enable_port(PS2_GPIO_BASE);
+	gpio_config_enable_input(PS2_GPIO_BASE, PS2_X_BIT_NUM);
+	gpio_config_analog_enable(PS2_GPIO_BASE, PS2_X_DIR_MASK);
+	gpio_config_alternate_function(PS2_GPIO_BASE, PS2_X_DIR_MASK);
+	gpio_config_enable_input(PS2_GPIO_BASE, PS2_Y_BIT_NUM);
+	gpio_config_analog_enable(PS2_GPIO_BASE, PS2_Y_DIR_MASK);
+	gpio_config_alternate_function(PS2_GPIO_BASE, PS2_Y_DIR_MASK);
+	
+	// initialize adc0
+	initialize_adc0(ADC0_BASE);
+	
+	
 }
 
 /*******************************************************************************
@@ -68,7 +86,8 @@ void ps2_initialize(void)
 ********************************************************************************/
 uint16_t ps2_get_x(void)
 {
-  uint16_t adc_val = get_adc_value(PS2_ADC_BASE, PS2_X_ADC_CHANNEL);
+  uint16_t adc_val;
+  adc_val = get_adc_value(PS2_ADC_BASE, PS2_X_ADC_CHANNEL);
   return adc_val;
 }
 
@@ -80,7 +99,8 @@ uint16_t ps2_get_x(void)
 ********************************************************************************/
 uint16_t ps2_get_y(void)
 {
-  uint16_t adc_val = get_adc_value(PS2_ADC_BASE, PS2_Y_ADC_CHANNEL);
+  uint16_t adc_val;
+  adc_val = get_adc_value(PS2_ADC_BASE, PS2_Y_ADC_CHANNEL);
   return adc_val;
 }
 

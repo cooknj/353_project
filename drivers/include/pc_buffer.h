@@ -27,11 +27,13 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+
+
 typedef __packed struct {
 	volatile uint32_t produce_count;
 	volatile uint32_t consume_count;
 	uint16_t BUFFER_SIZE;
-	volatile char *array;
+	volatile char* array;
 } PC_Buffer ;
 
 //*****************************************************************************

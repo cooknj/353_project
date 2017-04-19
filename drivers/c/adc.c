@@ -80,11 +80,54 @@ bool initialize_adc(  uint32_t adc_base )
   // ADD CODE
   // Set the event multiplexer to trigger conversion on a processor trigger
   // for sample sequencer #3.
+	myADC->EMUX &= ~ADC_EMUX_EM3_M;
 	myADC->EMUX |= ADC_EMUX_EM3_PROCESSOR;
   // ADD CODE
   // Set IE0 and END0 in SSCTL3
-  myADC->SSCTL3 |= ADC_SSCTL3_IE0;
+	myADC->SSCTL3 |= ADC_SSCTL3_IE0;
 	myADC->SSCTL3 |= ADC_SSCTL3_END0;
+  return true;
+}
+
+
+
+// Initialize adc0
+bool initialize_adc0(  uint32_t adc_base )
+{
+  ADC0_Type  *myADC;
+  uint32_t rcgc_adc_mask= SYSCTL_RCGCADC_R0;
+  uint32_t pr_mask = SYSCTL_PRADC_R0;
+  
+  // Turn on the ADC Clock
+  SYSCTL->RCGCADC |= rcgc_adc_mask;
+  
+  // Wait for ADCx to become ready
+  while( (pr_mask & SYSCTL->PRADC) != pr_mask){}
+    
+  // Type Cast adc_base and set it to myADC
+  myADC = (ADC0_Type *)adc_base;
+  
+
+  // disable sample sequencer #2 by writing a 0 to the 
+  // corresponding ASENn bit in the ADCACTSS register 
+	myADC->ACTSS &= ~ADC_ACTSS_ASEN2;
+
+  // Set the event multiplexer to trigger conversion on a processor trigger
+  // for sample sequencer #2.
+	myADC->EMUX &= ~ADC_EMUX_EM2_M;
+	myADC->EMUX = ADC_EMUX_EM2_PROCESSOR;
+
+  // Set IE0 and END0 in SSCTL2
+	myADC->SSCTL2 |= ADC_SSCTL2_IE1;
+	myADC->SSCTL2 |= ADC_SSCTL2_END1;
+		
+	// Set channels for x and y
+  myADC->SSMUX2 = PS2_X_ADC_CHANNEL | (PS2_Y_ADC_CHANNEL << 4); 
+  	
+	myADC->IM |= ADC_IM_MASK2; // Turn on Interrupts
+	myADC->ACTSS |= ADC_ACTSS_ASEN2;  // Enable SS2
+	NVIC_EnableIRQ(ADC0SS2_IRQn); // Turn on interrupts
+		
   return true;
 }
 

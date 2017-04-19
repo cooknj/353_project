@@ -65,14 +65,15 @@
 //*****************************************************************************
 static __inline void  port_f_enable_port(void)
 {
-	//turn on clock for port F
+  
 	SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R5;
-	//wait until clock is on by checking PRGPIO
-	while( !(SYSCTL->PRGPIO & SYSCTL_PRGPIO_R5) )
-	{}
-	//set the lock register
+	
+	while( !(SYSCTL->PRGPIO & SYSCTL_PRGPIO_R0)) {
+		
+	}
+	
 	GPIO_PORTF_LOCK_R = 0x4C4F434B;
-  GPIO_PORTF_CR_R = 0xFF;
+	GPIO_PORTF_CR_R = 0xFF;
 }
 
 
@@ -91,7 +92,9 @@ static __inline void  port_f_enable_port(void)
 //*****************************************************************************
 static __inline void  port_f_digital_enable(uint8_t bit_mask)
 {
+
 	GPIOF->DEN |= bit_mask;
+	
 }
 
 
@@ -159,8 +162,7 @@ static __inline void  port_f_enable_pull_up(uint8_t bit_mask)
 //*****************************************************************************
 void  lp_io_set_pin(uint8_t pin_number)
 {
-	int pin_mask = 0x01 << pin_number;
-	GPIOF->DATA |= pin_mask;
+	GPIOF->DATA |= 0x01 << pin_number;
 }
 
 //*****************************************************************************
@@ -173,8 +175,7 @@ void  lp_io_set_pin(uint8_t pin_number)
 //*****************************************************************************
 void  lp_io_clear_pin(uint8_t pin_number)
 {
-	int pin_mask = 0x01 << pin_number;
-	GPIOF->DATA &= ~pin_mask;
+	GPIOF->DATA &= ~(0x01 << pin_number);
 }
 
 //*****************************************************************************
@@ -189,9 +190,12 @@ void  lp_io_clear_pin(uint8_t pin_number)
 //*****************************************************************************
 bool  lp_io_read_pin(uint8_t pin_number)
 {
-  if((GPIOF->DATA & (1<<pin_number)))
-		return true;
-	return false;
+  if( GPIOF->DATA  & ( 1 << pin_number ) ) {
+   return true;
+	}
+	else {
+		return false;
+	}
 }
 
 /*********************************************************************************
@@ -199,17 +203,42 @@ bool  lp_io_read_pin(uint8_t pin_number)
 * Configures the GPIO pins connected to the Launchpad LEDs and push buttons
 *
 ********************************************************************************/
-void lp_io_init(void)
-{
-	//enable RCGC for port F
+void lp_io_init(void) {
+
+	// Enable the RCGC for Port F.
 	port_f_enable_port();
-	//configure pins as digital pins
-	port_f_digital_enable(0x1F);
-	//configure LED pins as output
-	port_f_enable_output(RED_M|BLUE_M|GREEN_M);
-	//configure push button pins as input
-	port_f_enable_input(SW1_M|SW2_M);
-	//enable pull-up resistors on pus button pins
-	port_f_enable_pull_up(SW1_M|SW2_M);
+	
+	// Configure the pins on Port F connected to the LEDs and push buttons as digital pins
+	port_f_digital_enable(0x0000001F);
+	
+	// Configure the pins connected to the LEDs as output
+	port_f_enable_output(RED_M | GREEN_M | BLUE_M);
+	
+	// Configure the pins connected to the push buttons as inputs
+	port_f_enable_input(SW1_M | SW2_M);
+	
+	// Enable pull-up resistors on the pins connected to the push buttons.
+	port_f_enable_pull_up(SW1_M | SW2_M);
+
 }
 
+
+// Initiailze SW1 and LEDS
+void lp_io_init_SW1_LED(void) {
+
+	// Enable the RCGC for Port F.
+	port_f_enable_port();
+	
+	// Configure the pins on Port F connected to the LEDs and push buttons as digital pins
+	port_f_digital_enable(0x0000001F);
+	
+	// Configure the pins connected to the LEDs as output
+	port_f_enable_output(GREEN_M | BLUE_M);
+	
+	// Configure the pins connected to the push buttons as inputs
+	port_f_enable_input(SW1_M | SW2_M);
+	
+	// Enable pull-up resistors on the pins connected to the push buttons.
+	port_f_enable_pull_up(SW1_M | SW2_M);
+
+}

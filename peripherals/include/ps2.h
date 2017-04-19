@@ -32,7 +32,7 @@
 
 // ADD CODE
 // Define the base addresses for the GPIO port that is connected to the PS2 Joystick
-#define   PS2_GPIO_BASE		GPIOE_BASE
+#define   PS2_GPIO_BASE    GPIOE_BASE
 
 // ADD CODE
 // Define which bit number ( 0 through 7) each signal is connected to on the GPIO port.
@@ -65,6 +65,8 @@
 * ADC0 to use Sample Sequencer #3 to convert a programmable channel number.
 *******************************************************************************/
 void ps2_initialize(void);
+
+void adc0_ps2_initialize(void);
 
 /*******************************************************************************
 * Function Name: ps2_get_x

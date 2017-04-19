@@ -51,7 +51,7 @@
 *
 *******************************************************************************/
 void lp_io_init(void);
-
+void lp_io_init_SW1_LED(void);
 
 //*****************************************************************************
 // Sets a given GPIO pin to 1.  All other pins retain their value
@@ -84,6 +84,8 @@ void  lp_io_clear_pin(uint8_t pin_number);
 //    false if the value is a 0
 //*****************************************************************************
 bool  lp_io_read_pin(uint8_t pin_number);
+
+
 
 
 #endif

@@ -99,22 +99,26 @@ bool gp_timer_wait(uint32_t base_addr, uint32_t ticks)
   //*********************    
   // ADD CODE
   //*********************
-	//stop timers A/B
-	gp_timer->CTL &= ~TIMER_CTL_TAEN;
-	gp_timer->CTL &= ~TIMER_CTL_TBEN;
-	//set interval of timer A
+	
+	// Stops both timers
+  gp_timer->CTL &= ~TIMER_CTL_TAEN;
+  gp_timer->CTL &= ~TIMER_CTL_TBEN;
+	
+	// Set interval 
 	gp_timer->TAILR = ticks;
-	//clear a timer A timeout
+
+	
+	// Acknowledge(clear) timer A
 	gp_timer->ICR |= TIMER_ICR_TATOCINT;
-	//start timer A
+	
+	// Starts timer A
 	gp_timer->CTL |= TIMER_CTL_TAEN;
-	//wait until timer A times out
-	while((gp_timer->RIS & TIMER_RIS_TATORIS) != 1) 
-	{
-		//wait
+	
+	// Detect timer out
+	while((gp_timer->RIS & TIMER_RIS_TATORIS) != 1) {
 	}
-  
-  return true;
+		
+	return true;
 }
 
 
@@ -162,22 +166,113 @@ bool gp_timer_config_32(uint32_t base_addr, uint32_t mode, bool count_up, bool e
   //*********************    
   // ADD CODE
   //*********************
-	//stop timers A/B
-	gp_timer->CTL &= ~TIMER_CTL_TAEN;
-	gp_timer->CTL &= ~TIMER_CTL_TBEN;
-	//configure as 32 bit timer
-	gp_timer->CFG = TIMER_CFG_32_BIT_TIMER;
-	//clear then set mode
-	gp_timer->TAMR &= ~TIMER_TAMR_TAMR_M;
-	gp_timer->TAMR |= mode;
-	//set direction
-	if(count_up)
-		gp_timer->TAMR |= TIMER_TAMR_TACDIR;
-	else gp_timer->TAMR &= ~TIMER_TAMR_TACDIR;
-	//enable/disable interrupts
-	if(enable_interrupts)
-		gp_timer->IMR |= TIMER_IMR_TATOIM;
-	else gp_timer->IMR &= ~TIMER_IMR_TATOIM;
     
+		// Stops both timers
+		gp_timer->CTL &= ~TIMER_CTL_TAEN;
+    gp_timer->CTL &= ~TIMER_CTL_TBEN;
+		
+		// Configs as 32-bit timer
+		gp_timer->CFG = TIMER_CFG_32_BIT_TIMER;
+		
+		// Clears and sets the mode
+		gp_timer->TAMR &= ~TIMER_TAMR_TAMR_M;
+		gp_timer->TAMR |= mode;
+		
+		// Sets count direction
+		if (count_up) {
+			gp_timer->TAMR |= TIMER_TAMR_TACDIR;
+		} else {
+			gp_timer->TAMR &= ~TIMER_TAMR_TACDIR;
+		}
+		
+		// Enables or disables the interrupts
+		if (enable_interrupts) {
+			gp_timer->IMR |= TIMER_IMR_TATOIM;
+		} else {
+			gp_timer->IMR &= ~TIMER_IMR_TATOIM;
+		}
+		
   return true;  
+}
+
+
+// Set two 16 bit timers and config
+bool gp_timer_config_16(uint32_t base_addr, uint32_t ticksA, uint32_t ticksB, uint32_t prescaleA, uint32_t prescaleB)
+{
+  uint32_t timer_rcgc_mask;
+  uint32_t timer_pr_mask;
+  TIMER0_Type *gp_timer;
+  
+  // Verify the base address.
+  if ( ! verify_base_addr(base_addr) )
+  {
+    return false;
+  }
+  
+  // get the correct RCGC and PR masks for the base address
+  get_clock_masks(base_addr, &timer_rcgc_mask, &timer_pr_mask);
+  
+  // Turn on the clock for the timer
+  SYSCTL->RCGCTIMER |= timer_rcgc_mask;
+
+  // Wait for the timer to turn on
+  while( (SYSCTL->PRTIMER & timer_pr_mask) == 0) {};
+  
+  // Type cast the base address to a TIMER0_Type struct
+  gp_timer = (TIMER0_Type *)base_addr;
+
+    
+		// Stops both timers
+		gp_timer->CTL &= ~TIMER_CTL_TAEN;
+    gp_timer->CTL &= ~TIMER_CTL_TBEN;
+		
+		// Configs as 16-bit timers
+		gp_timer->CFG = TIMER_CFG_16_BIT;
+		
+		// Clears and sets the mode
+		gp_timer->TAMR &= ~TIMER_TAMR_TAMR_M;
+		gp_timer->TAMR |= TIMER_TAMR_TAMR_PERIOD;
+		gp_timer->TBMR &= ~TIMER_TBMR_TBMR_M;
+		gp_timer->TBMR |= TIMER_TBMR_TBMR_PERIOD;
+		
+		// Sets count direction
+
+		gp_timer->TAMR &= ~TIMER_TAMR_TACDIR;
+		gp_timer->TBMR &= ~TIMER_TBMR_TBCDIR;
+		
+		// Enables the interrupts
+
+		gp_timer->IMR |= (TIMER_IMR_TATOIM | TIMER_IMR_TBTOIM);
+
+		// Sets LOAD
+	
+		gp_timer->TAILR = ticksA;
+		gp_timer->TBILR = ticksB;
+		
+		// Sets prescaler
+		
+		gp_timer->TAPR = prescaleA;
+		gp_timer->TBPR = prescaleB;
+		
+		// Enable the timers
+		gp_timer->ICR |= TIMER_ICR_TATOCINT | TIMER_ICR_TBTOCINT;
+		gp_timer->CTL |= TIMER_CTL_TAEN | TIMER_CTL_TBEN;
+		
+		// Enable interrupts
+		NVIC_EnableIRQ(TIMER0A_IRQn);
+		NVIC_EnableIRQ(TIMER0B_IRQn);
+		
+  return true;  
+}
+
+// Clear intterupts for either timerA or timerB
+void clearInterrupt(uint32_t base_addr, bool A) {
+	  TIMER0_Type *gp_timer;
+		gp_timer = (TIMER0_Type *)base_addr;
+		
+	if (A) {
+		gp_timer->ICR |= TIMER_ICR_TATOCINT;
+	} else {
+		gp_timer->ICR |= TIMER_ICR_TBTOCINT;
+	}
 }

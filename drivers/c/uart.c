@@ -283,50 +283,51 @@ bool uart_init(uint32_t uart_base, bool enable_rx_irq, bool enable_tx_irq)
     rcgc_mask = uart_get_rcgc_mask(uart_base);
     pr_mask = uart_get_pr_mask(uart_base);
     
+		
+
+		
+		
     // ADD CODE
+		// Enable UART
 		SYSCTL->RCGCUART |= rcgc_mask;
-		while(!(SYSCTL->PRUART && pr_mask))
-		{
-			//wait
+		
+    // Wait till its ready
+		while(!(SYSCTL->PRUART && pr_mask)) {
 		}
-		
-    //disable UART0
+			
+		// Disable UART
 		uart->CTL &= ~UART_CTL_UARTEN;
-		
-		//set baud rate to 115200
+			
+		// Set Baud Rate
 		uart->IBRD = 27;
 		uart->FBRD = 8;
+    
+		// Set the UART to 8 bits
+		uart->LCRH =   UART_LCRH_WLEN_8 | UART_LCRH_FEN;
 		
-		//configure UART for 8N1 and disable hardware FIFOs
-		uart->LCRH = UART_LCRH_WLEN_8 | UART_LCRH_FEN;
-		
-		if( enable_rx_irq)
-	  {
-		  // <ADD CODE> Turn on the UART Interrupts for Rx, and Rx Timeout
+		if (enable_rx_irq) {
+			// <ADD CODE> Turn on the UART Interrupts for Rx, and Rx Timeout
 			uart->IM |= UART_IM_RXIM | UART_IM_RTIM;
-	  }
+		}
 
-	  if( enable_tx_irq)
-	  {
-		 // DO Nothing until next ICE
+		if (enable_tx_irq) {
+			// DO Nothing until next ICE
 			uart->IM |= UART_IM_TXIM;
-	  }
+		}
 
-	  if ( enable_rx_irq || enable_tx_irq )
-	  {
-			// <ADD CODE> Set the priority to 0.  Be sure to call uart_get_irq_num(uart_base) to
-			// get the correct IRQn_Type
+		if (enable_rx_irq || enable_tx_irq) {
+			 // <ADD CODE> Sest the priority to 0.  Be sure to call uart_get_irq_num(uart_base) to   // get the correct IRQn_Type
 			NVIC_SetPriority(uart_get_irq_num(uart_base), 0);
-			// <ADD CODE> Enable the NVIC.  Be sure to call uart_get_irq_num(uart_base) to get
-			// the correct IRQn_Type
+			 // <ADD CODE> Enable the NVIC.  Be sure to call uart_get_irq_num(uart_base) to get
+			 // the correct IRQn_Type
 			NVIC_EnableIRQ(uart_get_irq_num(uart_base));
-	  }
-
+		}
 		
-		//re-enable UART to transmist and receive data
-		uart->CTL = (UART_CTL_RXE | UART_CTL_TXE | UART_CTL_UARTEN);
 		
-    return true;
+		// Enable send and recieve
+		UART0->CTL = (UART_CTL_RXE|UART_CTL_TXE|UART_CTL_UARTEN);
+		
+		return true;
 
 }
 
