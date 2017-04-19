@@ -7,37 +7,18 @@ I:\GitHub\353_project\project_base\HW3.uvprojx
 Project File Date:  04/19/2017
 
 <h2>Output:</h2>
-Rebuild target 'HW2'
+Build target 'HW2'
 compiling main.c...
-main.c(351): warning:  #223-D: function "initialize_serial_debug" declared implicitly
+main.c(146): warning:  #223-D: function "initialize_serial_debug" declared implicitly
     initialize_serial_debug();
-main.c(379): warning:  #223-D: function "put_string" declared implicitly
+main.c(174): warning:  #223-D: function "put_string" declared implicitly
     put_string("\n\r");
-main.c(399): warning:  #1-D: last line of file ends without a newline
+main.c(230): warning:  #1-D: last line of file ends without a newline
   }
 main.c: 3 warnings, 0 errors
-compiling adc.c...
-compiling gpio_port.c...
-..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
-         return 0;
-..\drivers\c\gpio_port.c(454): warning:  #177-D: variable "gpioPort" was declared but never referenced
-    GPIOA_Type  *gpioPort;
-..\drivers\c\gpio_port.c: 2 warnings, 0 errors
-compiling timers.c...
-..\drivers\c\timers.c(278): warning:  #1-D: last line of file ends without a newline
-  }
-..\drivers\c\timers.c: 1 warning, 0 errors
-compiling launchpad_io.c...
-..\peripherals\c\launchpad_io.c(244): warning:  #1-D: last line of file ends without a newline
-  }
-..\peripherals\c\launchpad_io.c: 1 warning, 0 errors
-compiling lcd.c...
-compiling ps2.c...
-assembling startup_TM4C123.s...
-compiling system_TM4C123.c...
 linking...
-Program Size: Code=8212 RO-data=744 RW-data=64 ZI-data=13696  
-".\obj\ece353_base_project.axf" - 0 Error(s), 7 Warning(s).
+Program Size: Code=7312 RO-data=1964 RW-data=64 ZI-data=4096  
+".\obj\ece353_base_project.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -67,3 +48,183 @@ Package Vendor: Keil
       Include file:  Device\Include\TM4C123\TM4C123.h
       Source file:   Device\Source\ARM\startup_TM4C123.s
       Source file:   Device\Source\system_TM4C123.c
+Load "I:\\GitHub\\353_project\\project_base\\obj\\ece353_base_project.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+</pre>
+</body>
+</html>
+Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Load "I:\\GitHub\\353_project\\project_base\\obj\\ece353_base_project.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+n of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Load "I:\\GitHub\\353_project\\project_base\\obj\\ece353_base_project.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+lude
+  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Target not created
+    Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Target not created
+     Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Target not created
+;
+main.c(399): warning:  #1-D: last line of file ends without a newline
+  }
+main.c: 3 warnings, 24 errors
+compiling adc.c...
+compiling gpio_port.c...
+..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
+         return 0;
+..\drivers\c\gpio_port.c(454): warning:  #177-D: variable "gpioPort" was declared but never referenced
+    GPIOA_Type  *gpioPort;
+..\drivers\c\gpio_port.c: 2 warnings, 0 errors
+compiling timers.c...
+..\drivers\c\timers.c(278): warning:  #1-D: last line of file ends without a newline
+  }
+..\drivers\c\timers.c: 1 warning, 0 errors
+compiling launchpad_io.c...
+..\peripherals\c\launchpad_io.c(244): warning:  #1-D: last line of file ends without a newline
+  }
+..\peripherals\c\launchpad_io.c: 1 warning, 0 errors
+compiling lcd.c...
+compiling ps2.c...
+assembling startup_TM4C123.s...
+compiling system_TM4C123.c...
+".\obj\ece353_base_project.axf" - 24 Error(s), 7 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.1.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.TM4C_DFP.1.0.0.pack
+                Keil::Device:Startup:1.0.0
+                Texas Instruments Tiva C Series Device Support and Examples
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  I:\GitHub\353_project\project_base\RTE
+  C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
+  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Target not created
+K\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Target not created
+type>(159): error:  #20: identifier "uint_8" is undefined
+  const uint_8 startWidthPages = 13;
+KB: Unexpected type: 0
+error type>(160): error:  #20: identifier "uint_8" is undefined
+  const uint_8 startHeightPixels = 38;
+KB: Unexpected type: 0
+error type>(165): error:  #20: identifier "uint_8" is undefined
+  const uint_8 scoresBitmap =
+KB: Unexpected type: 0
+error type>(208): error:  #20: identifier "uint_8" is undefined
+  const uint_8 scoresWidthPages = 13;
+KB: Unexpected type: 0
+error type>(209): error:  #20: identifier "uint_8" is undefined
+  const uint_8 scoresHeightPixels = 38;
+KB: Unexpected type: 0
+<error type>bitmaps.c: 0 warnings, 24 errors
+compiling adc.c...
+compiling gpio_port.c...
+..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
+         return 0;
+..\drivers\c\gpio_port.c(454): warning:  #177-D: variable "gpioPort" was declared but never referenced
+    GPIOA_Type  *gpioPort;
+..\drivers\c\gpio_port.c: 2 warnings, 0 errors
+compiling timers.c...
+..\drivers\c\timers.c(278): warning:  #1-D: last line of file ends without a newline
+  }
+..\drivers\c\timers.c: 1 warning, 0 errors
+compiling launchpad_io.c...
+..\peripherals\c\launchpad_io.c(244): warning:  #1-D: last line of file ends without a newline
+  }
+..\peripherals\c\launchpad_io.c: 1 warning, 0 errors
+compiling lcd.c...
+compiling ps2.c...
+assembling startup_TM4C123.s...
+compiling system_TM4C123.c...
+".\obj\ece353_base_project.axf" - 48 Error(s), 7 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.1.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.TM4C_DFP.1.0.0.pack
+                Keil::Device:Startup:1.0.0
+                Texas Instruments Tiva C Series Device Support and Examples
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  I:\GitHub\353_project\project_base\RTE
+  C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
+  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Source file:   Device\Source\system_TM4C123.c
+Target not created

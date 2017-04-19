@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "TM4C123.h"
+
 // 
 //  Image data for alien
 // 

@@ -28,13 +28,16 @@
 #define SetBit(j, k, x) (pixels[(j/8)][k] |= (x << (j%8))) // Use byte array as a bit array to save space
 
 
+
 char group[] = "Group33";
 char individual_1[] = "Jackson Melchert";
 char individual_2[] = "Nicholas Cook";
 
 volatile bool SW1_pressed; // Global for SW1
 volatile bool analogConvert; // Global for adc convertion
-uint32_t xVal, yVal; // X and Y values of joystick
+volatile bool refreshPlayer;
+volatile bool refreshAliens;
+int32_t xVal, yVal; // X and Y values of joystick
 uint16_t xPos, yPos; // Current pixel position
 uint8_t pixels[30][320]; // Array of on pixels
 
@@ -54,7 +57,7 @@ void TIMER0A_Handler(void) {
 		
 	// Counters for debouncing and flashing the led
 	static uint8_t button_count = 0;
-	static uint8_t BLUE_LED_count = 0;
+
 	
 	// Increment the counter for debouncing
 	if (!lp_io_read_pin(SW1_BIT)) {
@@ -71,18 +74,7 @@ void TIMER0A_Handler(void) {
 	}
 	
 
-	// Toggle Blue led every 10 interrupts
-	if (BLUE_LED_count == 10) {
-		lp_io_set_pin(BLUE_BIT);
-		BLUE_LED_count++;
-	} else if (BLUE_LED_count == 20) {
-		lp_io_clear_pin(BLUE_BIT);
-		BLUE_LED_count = 0;
-	} else {
-		BLUE_LED_count++;
-	}
-	
-	
+
 	clearInterrupt(TIMER0_BASE, true);
 	
 	return;
@@ -91,23 +83,22 @@ void TIMER0A_Handler(void) {
 
 // Timer0B Handler, used for Green led and ADC
 void TIMER0B_Handler(void) {
-	static uint8_t GREEN_LED_count = 0;
 	
+	static uint8_t Alien_count = 0;
 	ADC0_Type  *myADC;
 	
 	myADC = (ADC0_Type *)PS2_ADC_BASE;	
-	
-	// Turn on green led every 10 interrupts
-	if (GREEN_LED_count == 10) {
-		lp_io_set_pin(GREEN_BIT);
-		GREEN_LED_count++;
-	} else if (GREEN_LED_count == 20) {
-		lp_io_clear_pin(GREEN_BIT);
-		GREEN_LED_count = 0;
-	} else {
-		GREEN_LED_count++;
-	}
 
+	refreshPlayer = true;
+	// Increment the counter for debouncing
+	if (Alien_count == 4) {
+		refreshAliens = true;
+		Alien_count = 0;
+	} else {
+		Alien_count++;
+	}
+	
+	
 	// Enable SS2
 	myADC->PSSI |= ADC_PSSI_SS2;
 	
@@ -146,203 +137,7 @@ void readPS2() {
 	
 }
 
-//*****************************************************************************
-//  FSM for determining what state the program is in (DRAW, MOVE, ERASE
-//*****************************************************************************
-void fsm(void)
-{
 
-	static ETCH_MODES state = DRAW; // Default state is DRAW
-	uint8_t image[1]; // One pixel image used for drawing
-	image[0] = 1;
-	
-	switch (state)
-	{
-		case DRAW:
-		{
-			// If SW1 is pressed go to MOVE
-			if(SW1_pressed)
-			{
-				state = MOVE;
-				SW1_pressed = false;
-			}
-			else
-			{
-					// Read X and Y values based on ADC interrupt
-					if (analogConvert) {
-						analogConvert = false;
-						readPS2();
-						
-						// Draw green pixel
-						lcd_draw_image(xPos, 1, yPos, 1, image, LCD_COLOR_GREEN, LCD_COLOR_GREEN);
-						
-						// Move current pixel and wrap around
-						if	(xVal < 1024){
-							if (yPos <= 1) {
-								yPos = 319;	
-							} else {
-								yPos--;
-							}
-						} else if (xVal > 3072) {
-							if (yPos >= 319) {
-								yPos = 0;	
-							} else {
-								yPos++;
-							}
-						}
-						
-						if	(yVal < 1024){
-							if (xPos <= 1) {
-								xPos = 239;	
-							} else {
-								xPos--;
-							}
-							
-						} else if (yVal > 3072) {
-							if (xPos >= 239) {
-								xPos = 0;	
-							} else {
-								xPos++;
-							}
-						}
-						
-						// Add current pixel to array of visted pixels
-						SetBit(xPos, yPos, 1);
-					}
-			}
-			break;
-		}
-		case MOVE:
-		{
-			// If SW2 is held then go to ERASE
-			if(!lp_io_read_pin(SW2_BIT))
-			{
-				state = ERASE;
-				
-			}
-			else if (!SW1_pressed)
-			{
-				state = MOVE;
-				
-				// Ready X and Y on joystick based on ADC interrupt
-				if (analogConvert) {
-					
-						// Determine if passing through a pixel that is green, and reset it to what it originally was
-						if (pixels[xPos/8][yPos] & (1 << (xPos % 8))) {
-							lcd_draw_image(xPos, 1, yPos, 1, image, LCD_COLOR_GREEN, LCD_COLOR_GREEN);
-						} else {
-							lcd_draw_image(xPos, 1, yPos, 1, image, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-						}
-						
-						// Set global analogConvert to false and read X and Y
-						analogConvert = false;
-						readPS2();
-						
-						// Move current pixel and wrap around
-						if	(xVal < 1024){
-							if (yPos <= 1) {
-								yPos = 319;	
-							} else {
-								yPos--;
-							}
-						} else if (xVal > 3072) {
-							if (yPos >= 319) {
-								yPos = 0;	
-							} else {
-								yPos++;
-							}
-						}
-						
-						if	(yVal < 1024){
-							if (xPos <= 1) {
-								xPos = 239;	
-							} else {
-								xPos--;
-							}
-							
-						} else if (yVal > 3072) {
-							if (xPos >= 239) {
-								xPos = 0;	
-							} else {
-								xPos++;
-							}
-						}
-						
-						// Set current pixel to red
-						lcd_draw_image(xPos, 1, yPos, 1, image, LCD_COLOR_RED, LCD_COLOR_RED);
-						
-					}
-			} else {
-				// Go to draw if SW1 is pressed
-				state = DRAW;
-				SW1_pressed = false;
-			}
-			break;
-		}
-		case ERASE:
-		{
-			// If SW2 is held, stay in ERASE
-			if(!lp_io_read_pin(SW2_BIT))
-			{
-				state = ERASE;
-				if (analogConvert) {
-					
-						// Delete current pixel and remove from array
-						lcd_draw_image(xPos, 1, yPos, 1, image, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-						SetBit(xPos, yPos, 0);
-						
-						analogConvert = false;
-						readPS2();
-						// Move current pixel and wrap around
-						if	(xVal < 1024){
-							if (yPos <= 1) {
-								yPos = 319;	
-							} else {
-								yPos--;
-							}
-						} else if (xVal > 3072) {
-							if (yPos >= 319) {
-								yPos = 0;	
-							} else {
-								yPos++;
-							}
-						}
-						
-						if	(yVal < 1024){
-							if (xPos <= 1) {
-								xPos = 239;	
-							} else {
-								xPos--;
-							}
-							
-						} else if (yVal > 3072) {
-							if (xPos >= 239) {
-								xPos = 0;	
-							} else {
-								xPos++;
-							}
-						}
-						
-						// Draw new pixel red
-						lcd_draw_image(xPos, 1, yPos, 1, image, LCD_COLOR_RED, LCD_COLOR_RED);
-						
-					}
-			}
-			else
-			{
-				// If SW2 is released then go back to MOVE
-				state = MOVE;
-			}
-			break;
-		}
-		default:
-		{
-			// Never should get here
-			while(1){};
-		}
-	}
-	
-}
 
 //*****************************************************************************
 //*****************************************************************************
@@ -391,9 +186,38 @@ main(void)
 	lcd_clear_screen(LCD_COLOR_BLACK);
 	xPos = 120;
 	yPos = 160;
+	
 
+	
+
+	lcd_draw_image(100, scoresWidthPixels, 200, scoresHeightPixels, scoresBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+
+	
   // Reach infinite loop
   while(1){
-		fsm();
+		
+		if (refreshAliens) {
+			refreshAliens = false;
+			lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+			lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+		}
+		
+		if (analogConvert) {
+			analogConvert = false;
+			
+		
+			readPS2();
+		
+			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+			
+			xVal = (xVal - 2048)/512;
+			yVal = (yVal - 2048)/512;
+
+			yPos += xVal;
+			xPos += yVal;
+
+			lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+			
+		}
   }
 }
