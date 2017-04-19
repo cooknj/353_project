@@ -173,23 +173,17 @@ const uint8_t explosionHeightPixels = 18;
 
 const uint8_t bulletBitmap[] =
 {
-	0x00, 0x00, //           
-	0x00, 0x00, //           
-	0x00, 0x00, //           
-	0x00, 0x00, //           
-	0x0C, 0x00, //     ##    
-	0x0C, 0x00, //     ##    
-	0x0C, 0x00, //     ##    
-	0x0C, 0x00, //     ##    
-	0x00, 0x00, //           
-	0x00, 0x00, //           
-	0x00, 0x00, //           
-	0x00, 0x00, //           
+	0x00, //   
+	0x00, //   
+	0xC0, // ##
+	0xC0, // ##
+	0xC0, // ##
+	0xC0, // ##
 };
 
 // Bitmap sizes for bullet
-const uint8_t bulletWidthPixels = 10;
-const uint8_t bulletHeightPixels = 12;
+const uint8_t bulletWidthPixels = 2;
+const uint8_t bulletHeightPixels = 6;
 
 
 
@@ -199,29 +193,24 @@ const uint8_t bulletHeightPixels = 12;
 
 const uint8_t alienbulletBitmap[] =
 {
-	0x00, 0x00, //               
-	0x00, 0x00, //               
-	0x00, 0x00, //               
-	0x00, 0x00, //               
-	0x03, 0x00, //       ##      
-	0x03, 0x00, //       ##      
-	0x0C, 0x00, //     ##        
-	0x0C, 0x00, //     ##        
-	0x03, 0x00, //       ##      
-	0x03, 0x00, //       ##      
-	0x00, 0xC0, //         ##    
-	0x00, 0xC0, //         ##    
-	0x03, 0x00, //       ##      
-	0x03, 0x00, //       ##      
-	0x00, 0x00, //               
-	0x00, 0x00, //               
-	0x00, 0x00, //               
-	0x00, 0x00, //               
+	0x30, //   ##  
+	0x30, //   ##  
+	0xC0, // ##    
+	0xC0, // ##    
+	0x30, //   ##  
+	0x30, //   ##  
+	0x0C, //     ##
+	0x0C, //     ##
+	0x30, //   ##  
+	0x30, //   ##  
+	0x00, //       
+	0x00, //       
 };
 
 // Bitmap sizes for alienbullet
-const uint8_t alienbulletWidthPixels = 14;
-const uint8_t alienbulletHeightPixels = 18;
+const uint8_t alienbulletWidthPixels = 6;
+const uint8_t alienbulletHeightPixels = 12;
+
 
 
 
