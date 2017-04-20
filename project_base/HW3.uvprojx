@@ -414,6 +414,11 @@
               <FileType>5</FileType>
               <FilePath>.\main.h</FilePath>
             </File>
+            <File>
+              <FileName>ece353_hw2_fonts.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ece353_hw2_fonts.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

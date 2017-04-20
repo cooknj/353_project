@@ -4,29 +4,25 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 I:\GitHub\353_project\project_base\HW3.uvprojx
-Project File Date:  04/19/2017
+Project File Date:  04/20/2017
 
 <h2>Output:</h2>
 Build target 'HW2'
 compiling main.c...
 main.c(120): warning:  #223-D: function "initialize_serial_debug" declared implicitly
     initialize_serial_debug();
-main.c(175): warning:  #223-D: function "put_string" declared implicitly
+main.c(180): warning:  #223-D: function "put_string" declared implicitly
     put_string("\n\r");
-main.c(342): warning:  #1-D: last line of file ends without a newline
-  }
-main.c(141): warning:  #177-D: variable "randomBit" was declared but never referenced
-        uint8_t randomBit;
-main.c(142): warning:  #177-D: variable "alienShoot" was declared but never referenced
-        uint8_t alienShoot;
-main.c(144): warning:  #177-D: variable "alienStartingXPos" was declared but never referenced
+main.c(382): warning:  #68-D: integer conversion resulted in a change of sign
+                lcd_print_stringXY(msg,199,10,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+main.c(142): warning:  #177-D: variable "alienStartingXPos" was declared but never referenced
         int alienStartingXPos = 10;
-main.c(155): warning:  #177-D: variable "alienBullet" was declared but never referenced
+main.c(157): warning:  #177-D: variable "alienBullet" was declared but never referenced
         int alienBullet = 0; 
-main.c: 7 warnings, 0 errors
+main.c: 5 warnings, 0 errors
 linking...
-Program Size: Code=8720 RO-data=2208 RW-data=68 ZI-data=4100  
-".\obj\ece353_base_project.axf" - 0 Error(s), 7 Warning(s).
+Program Size: Code=9632 RO-data=6768 RW-data=68 ZI-data=4100  
+".\obj\ece353_base_project.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -64,10 +60,7 @@ Verify OK.
 </pre>
 </body>
 </html>
-RM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
-  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
-
-<h2>Collection of Component Files used:</h2>
+t Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:3.30.0
       Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
@@ -81,3 +74,18 @@ Connecting: Mode=JTAG, Speed=1000000Hz
 Erase Done.
 Programming Done.
 Verify OK.
+2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Source file:   Device\Source\system_TM4C123.c
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Include file:  Device\Include\TM4C123\TM4C123.h
+Target not created
+Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+

@@ -26,7 +26,9 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "TM4C123.h"
+#include "ece353_hw2_fonts.h"
 
 extern void serialDebugInit(void);
 
