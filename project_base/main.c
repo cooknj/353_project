@@ -71,7 +71,7 @@ void TIMER0B_Handler(void) {
 	myADC = (ADC0_Type *)PS2_ADC_BASE;	
 
 	// delay buffer for displaying next row of aliens
-	if (alien_count == 20) {r
+	if (alien_count == 5) {
 		refreshAliens = true;
 		alien_count = 0;
 	} else {
@@ -140,20 +140,29 @@ main(void)
 {
 	uint8_t randomBit;
 	uint8_t alienShoot;
-	uint8_t columnCount = 239;
-	int alienStartingXPos = 120;
-	int alienStartingYPos = 250;
+	int columnCount = 30;
+	int alienStartingXPos = 10;
+	int alienStartingYPos = 260;
+	int aliensAlive[7][3];
+	bool moveHorizontal = true;
+	bool moveRight = true;
 	
 	// Arrays for the 16 bullets and their positions
 	int bulletXPos[16];
 	int bulletYPos[16];
 	bool bullets[16];
 	int bullet = 0; 
-	int i;
+	int i, j, x, z;
 	for (i = 0; i < 16; i++) {
 		bullets[i] = false;
 	}
 
+	for (i = 0; i < 7; i++) {
+		for (j = 0; j < 3; j++) {
+			aliensAlive[i][j] = (rand() % 2) + 1;
+		}
+	}
+	
   initialize_hardware();
 	
   put_string("\n\r");
@@ -170,9 +179,8 @@ main(void)
 	// Clear screen and set spaceship starting position
 	lcd_clear_screen(LCD_COLOR_BLACK);
 	xPos = 120;
-	yPos = 160;
+	yPos = 50;
 
-	lcd_draw_image(100, scoresWidthPixels, 200, scoresHeightPixels, scoresBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 
   // Main loop
   while(1) {
@@ -182,33 +190,41 @@ main(void)
 		if (refreshAliens) {
 			refreshAliens = false;
 
-			//lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-			//lcd_draw_image(120, alienWidthPixels, 160, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+			
 
-			// Attempt to display row of "random" aliens
-			while(columnCount > alienWidthPixels) { //alien has largest width
-				randomBit = rand() % 2;
-
-				if(randomBit == 0) {
-					lcd_draw_image(bottomAlien_x, alienWidthPixels, bottomAlien_y, alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-					lcd_draw_image(bottomAlien_x, alienWidthPixels, bottomAlien_y, alienHeightPixels, alienBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
-
-					columnCount -= alienWidthPixels;
+			if (moveHorizontal && moveRight) {
+				if (columnCount == 1){
+					moveHorizontal = false;
+				} else {
+					columnCount--;
 				}
-				else if(randomBit == 1) {
-					lcd_draw_image(bottomAlien_x, alien2WidthPixels, bottomAlien_y, alien2HeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-					lcd_draw_image(bottomAlien_x, alien2WidthPixels, bottomAlien_y, alien2HeightPixels, alienBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
-
-					columnCount -= alien2WidthPixels;
+			} else if (moveHorizontal && !moveRight) {
+				if (columnCount == 30){
+					moveHorizontal = false;
+				} else {
+					columnCount++;
 				}
 
-				bottomAlien_y--;
+			}	else {
+				alienStartingYPos -= 10;
+				lcd_draw_image(0, blackBarWidthPixels, alienStartingYPos + 60, blackBarHeightPixels, blackBarBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+				moveHorizontal = true;
+				moveRight = !moveRight;
+			}
+			
+			for (i = 0; i < 7; i++) {
+				for (j = 0; j < 3; j++) {
 
-			}//end while
-
-			//lcd_draw_image(alienStartingXPos, alienWidthPixels, alienStartingYPos--, alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
-		}
-		
+					if (aliensAlive[i][j] == 1){
+						lcd_draw_image(columnCount + (30 * i), alienWidthPixels, alienStartingYPos + (20 * j), alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+					} else if (aliensAlive[i][j] == 2){
+						lcd_draw_image(columnCount + (30 * i), alien2WidthPixels, alienStartingYPos + (20 * j), alien2HeightPixels, alien2Bitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+					} else {
+						lcd_draw_image(columnCount + (30 * i), alienWidthPixels, alienStartingYPos + (20 * j), alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+					}
+				}
+			}
+	}
 		if (SW1_pressed) {
 			SW1_pressed = false;
 			
@@ -234,10 +250,10 @@ main(void)
 			
 			readPS2();
 
-			xVal = (xVal - 2048)/1020;
-			yVal = (yVal - 2048)/1020;
+			xVal = (xVal - 2048)/900;
+			yVal = (yVal - 2048)/900;
 
-			if (xPos + yVal >= 0 && xPos + yVal <= 240 - spaceshipWidthPixels && yPos + xVal >= 0 && yPos + xVal <= 320 - spaceshipHeightPixels) {
+			if (xPos + yVal >= 0 && xPos + yVal <= 240 - spaceshipWidthPixels && yPos + xVal >= 0 && yPos + xVal <= 150 - spaceshipHeightPixels) {
 			
 			yPos += xVal;
 			xPos += yVal;
@@ -251,11 +267,24 @@ main(void)
 					lcd_draw_image(bulletXPos[i], bulletWidthPixels, bulletYPos[i], bulletHeightPixels, bulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 				}
 				
+				for (x = 0; x < 7; x++) {
+					for (z = 0; z < 3; z++) {
+						if (bullets[i] && aliensAlive[x][z] != 0 && bulletYPos[i] + 6 >= alienStartingYPos + (20*z) && bulletYPos[i] <= alienStartingYPos + (20*z) + 16 && bulletXPos[i] >= columnCount + (30*x) + 8 && bulletXPos[i] <= columnCount + (30*x) + 26) {
+							aliensAlive[x][z] = 0;
+							bullets[i] = false;
+							lcd_draw_image(bulletXPos[i], bulletWidthPixels, bulletYPos[i], bulletHeightPixels, bulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+							lcd_draw_image(columnCount + (30*x), explosionWidthPixels, alienStartingYPos + (20*z), explosionHeightPixels, explosionBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+							refreshAliens = false;
+						}
+					}
+				}
 				if (bullets[i]){
 					bulletYPos[i] = bulletYPos[i] + 2; // Bullet speed
 					lcd_draw_image(bulletXPos[i], bulletWidthPixels, bulletYPos[i], bulletHeightPixels, bulletBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
 				}
 			}
+			
+			
 		}	
   }
 }

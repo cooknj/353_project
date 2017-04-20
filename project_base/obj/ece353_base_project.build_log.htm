@@ -2,71 +2,81 @@
 <body>
 <pre>
 <h1>µVision Build Log</h1>
-<h2>Tool Versions:</h2>
-IDE-Version: µVision V5.22.0.0
-Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: Jackson Melchert, University of Wisconsin Madison, LIC=----
- 
-Tool Versions:
-Toolchain:       MDK-Lite  Version: 5.22
-Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 4 (build 422)
-Assembler:       Armasm.exe V5.06 update 4 (build 422)
-Linker/Locator:  ArmLink.exe V5.06 update 4 (build 422)
-Library Manager: ArmAr.exe V5.06 update 4 (build 422)
-Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
-CPU DLL:         SARMCM3.DLL V5.22
-Dialog DLL:      DCM.DLL V1.13.9.0
-Target DLL:      lmidk-agdi.dll V???
-Dialog DLL:      TCM.DLL V1.21.0.0
- 
 <h2>Project:</h2>
-F:\Documents\GitHub\353_project\project_base\HW3.uvprojx
+I:\GitHub\353_project\project_base\HW3.uvprojx
 Project File Date:  04/19/2017
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'HW2'
 compiling main.c...
-main.c(146): warning:  #223-D: function "initialize_serial_debug" declared implicitly
+main.c(120): warning:  #223-D: function "initialize_serial_debug" declared implicitly
     initialize_serial_debug();
-main.c(185): warning:  #223-D: function "put_string" declared implicitly
+main.c(168): warning:  #223-D: function "put_string" declared implicitly
     put_string("\n\r");
-main.c(263): warning:  #1-D: last line of file ends without a newline
+main.c(290): warning:  #1-D: last line of file ends without a newline
   }
-main.c: 3 warnings, 0 errors
+main.c(141): warning:  #177-D: variable "randomBit" was declared but never referenced
+        uint8_t randomBit;
+main.c(142): warning:  #177-D: variable "alienShoot" was declared but never referenced
+        uint8_t alienShoot;
+main.c(144): warning:  #177-D: variable "alienStartingXPos" was declared but never referenced
+        int alienStartingXPos = 10;
+main.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=7572 RO-data=2064 RW-data=64 ZI-data=4096  
-".\obj\ece353_base_project.axf" - 0 Error(s), 3 Warning(s).
+Program Size: Code=8112 RO-data=2208 RW-data=68 ZI-data=4100  
+".\obj\ece353_base_project.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.0.0.pack
-                ARM::CMSIS:CORE:5.0.0
+                http://www.keil.com/pack/ARM.CMSIS.4.1.1.pack
+                ARM::CMSIS:CORE:3.30.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.0.0
+   * Component: CORE Version: 3.30.0
 
 Package Vendor: Keil
-                http://www.keil.com/pack/Keil.TM4C_DFP.1.1.0.pack
-                Keil::Device:Startup:1.0.1
+                http://www.keil.com/pack/Keil.TM4C_DFP.1.0.0.pack
+                Keil::Device:Startup:1.0.0
                 Texas Instruments Tiva C Series Device Support and Examples
-   * Component: Startup Version: 1.0.1
+   * Component: Startup Version: 1.0.0
 
 <h2>Collection of Component include folders:</h2>
-  F:\Documents\GitHub\353_project\project_base\RTE\_HW2
-  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include
-  C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123
+  I:\GitHub\353_project\project_base\RTE
+  C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
+  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:5.0.0
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
 
-   * Component: Keil::Device:Startup:1.0.1
-      Include file:  Device\Include\TM4C123\TM4C123.h
-      Source file:   Device\Source\ARM\startup_TM4C123.s
+   * Component: Keil::Device:Startup:1.0.0
       Source file:   Device\Source\system_TM4C123.c
-Build Time Elapsed:  00:00:00
-</pre>
-</body>
-</html>
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Include file:  Device\Include\TM4C123\TM4C123.h
+Load "I:\\GitHub\\353_project\\project_base\\obj\\ece353_base_project.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+ice\Source\ARM\startup_TM4C123.s
+      Include file:  Device\Include\TM4C123\TM4C123.h
+Target not created
+project_base\RTE
+  C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
+  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Source file:   Device\Source\system_TM4C123.c
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+      Include file:  Device\Include\TM4C123\TM4C123.h
+Load "I:\\GitHub\\353_project\\project_base\\obj\\ece353_base_project.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
