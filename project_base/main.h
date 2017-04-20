@@ -231,7 +231,7 @@ const uint8_t bulletHeightPixels = 6;
 //  Image data for alienbullet
 // 
 
-const uint8_t alienbulletBitmap[] =
+const uint8_t alienBulletBitmap[] =
 {
 	0x30, //   ##  
 	0x70, //  ###  
@@ -248,8 +248,8 @@ const uint8_t alienbulletBitmap[] =
 };
 
 // Bitmap sizes for alienbullet
-const uint8_t alienbulletWidthPixels = 6;
-const uint8_t alienbulletHeightPixels = 12;
+const uint8_t alienBulletWidthPixels = 6;
+const uint8_t alienBulletHeightPixels = 12;
 
 
 

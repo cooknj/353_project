@@ -11,9 +11,9 @@ Build target 'HW2'
 compiling main.c...
 main.c(120): warning:  #223-D: function "initialize_serial_debug" declared implicitly
     initialize_serial_debug();
-main.c(168): warning:  #223-D: function "put_string" declared implicitly
+main.c(175): warning:  #223-D: function "put_string" declared implicitly
     put_string("\n\r");
-main.c(290): warning:  #1-D: last line of file ends without a newline
+main.c(342): warning:  #1-D: last line of file ends without a newline
   }
 main.c(141): warning:  #177-D: variable "randomBit" was declared but never referenced
         uint8_t randomBit;
@@ -21,10 +21,12 @@ main.c(142): warning:  #177-D: variable "alienShoot" was declared but never refe
         uint8_t alienShoot;
 main.c(144): warning:  #177-D: variable "alienStartingXPos" was declared but never referenced
         int alienStartingXPos = 10;
-main.c: 6 warnings, 0 errors
+main.c(155): warning:  #177-D: variable "alienBullet" was declared but never referenced
+        int alienBullet = 0; 
+main.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=8112 RO-data=2208 RW-data=68 ZI-data=4100  
-".\obj\ece353_base_project.axf" - 0 Error(s), 6 Warning(s).
+Program Size: Code=8720 RO-data=2208 RW-data=68 ZI-data=4100  
+".\obj\ece353_base_project.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -59,10 +61,7 @@ Connecting: Mode=JTAG, Speed=1000000Hz
 Erase Done.
 Programming Done.
 Verify OK.
-ice\Source\ARM\startup_TM4C123.s
-      Include file:  Device\Include\TM4C123\TM4C123.h
-Target not created
-project_base\RTE
+e\RTE
   C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
   C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
 
