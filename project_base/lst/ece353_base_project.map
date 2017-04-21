@@ -1,6 +1,4 @@
-Product: MDK-ARM Lite 5.10
-Component: ARM Compiler 5.04 update 1 (build 49)
-Tool: armlink [5040049]
+Component: ARM Compiler 5.06 update 4 (build 422) Tool: armlink [4d35d2]
 
 ==============================================================================
 
@@ -13,7 +11,7 @@ Section Cross References
     main.o(.text) refers to lcd.o(.text) for lcd_config_gpio
     main.o(.text) refers to rand.o(.text) for rand
     main.o(.text) refers to main.o(.data) for button_count
-    main.o(.text) refers to main.o(.constdata) for blackBarBitmap
+    main.o(.text) refers to main.o(.constdata) for bulletBitmap
     main.o(.text) refers to ece353_hw2_fonts.o(.text) for lcd_print_stringXY
     ece353_hw2_fonts.o(.text) refers to strlen.o(.text) for strlen
     ece353_hw2_fonts.o(.text) refers to lcd.o(.text) for lcd_draw_image
@@ -303,23 +301,32 @@ Removing Unused input sections from the image.
 
     Removing main.o(.rev16_text), (4 bytes).
     Removing main.o(.revsh_text), (4 bytes).
+    Removing main.o(.rrx_text), (6 bytes).
     Removing ece353_hw2_fonts.o(.rev16_text), (4 bytes).
     Removing ece353_hw2_fonts.o(.revsh_text), (4 bytes).
+    Removing ece353_hw2_fonts.o(.rrx_text), (6 bytes).
     Removing adc.o(.rev16_text), (4 bytes).
     Removing adc.o(.revsh_text), (4 bytes).
+    Removing adc.o(.rrx_text), (6 bytes).
     Removing gpio_port.o(.rev16_text), (4 bytes).
     Removing gpio_port.o(.revsh_text), (4 bytes).
+    Removing gpio_port.o(.rrx_text), (6 bytes).
     Removing timers.o(.rev16_text), (4 bytes).
     Removing timers.o(.revsh_text), (4 bytes).
+    Removing timers.o(.rrx_text), (6 bytes).
     Removing launchpad_io.o(.rev16_text), (4 bytes).
     Removing launchpad_io.o(.revsh_text), (4 bytes).
+    Removing launchpad_io.o(.rrx_text), (6 bytes).
     Removing lcd.o(.rev16_text), (4 bytes).
     Removing lcd.o(.revsh_text), (4 bytes).
+    Removing lcd.o(.rrx_text), (6 bytes).
     Removing ps2.o(.rev16_text), (4 bytes).
     Removing ps2.o(.revsh_text), (4 bytes).
+    Removing ps2.o(.rrx_text), (6 bytes).
     Removing startup_tm4c123.o(HEAP), (0 bytes).
     Removing system_tm4c123.o(.rev16_text), (4 bytes).
     Removing system_tm4c123.o(.revsh_text), (4 bytes).
+    Removing system_tm4c123.o(.rrx_text), (6 bytes).
     Removing validate_uart.o(.rev16_text), (4 bytes).
     Removing validate_uart.o(.revsh_text), (4 bytes).
     Removing validate_uart.o(.rrx_text), (6 bytes).
@@ -330,10 +337,10 @@ Removing Unused input sections from the image.
     Removing dmul.o(.text), (228 bytes).
     Removing ddiv.o(.text), (222 bytes).
     Removing dfixul.o(.text), (48 bytes).
-    Removing cdrcmple.o(.text), (40 bytes).
-    Removing depilogue.o(.text), (182 bytes).
+    Removing cdrcmple.o(.text), (48 bytes).
+    Removing depilogue.o(.text), (186 bytes).
 
-31 unused section(s) (total 1154 bytes) removed from the image.
+40 unused section(s) (total 1220 bytes) removed from the image.
 
 ==============================================================================
 
@@ -424,66 +431,66 @@ Image Symbol Table
     .ARM.Collect$$$$00002712                 0x0000027c   Section        4  entry2.o(.ARM.Collect$$$$00002712)
     __lit__00000000                          0x0000027c   Data           4  entry2.o(.ARM.Collect$$$$00002712)
     .text                                    0x00000280   Section        0  main.o(.text)
-    .text                                    0x00000d60   Section        0  ece353_hw2_fonts.o(.text)
-    .text                                    0x00000e10   Section        0  adc.o(.text)
-    .text                                    0x00000f3c   Section        0  gpio_port.o(.text)
-    verify_base_addr                         0x00000f3d   Thumb Code    64  gpio_port.o(.text)
-    .text                                    0x000011d0   Section        0  timers.o(.text)
-    verify_base_addr                         0x000011d1   Thumb Code    64  timers.o(.text)
-    get_clock_masks                          0x00001211   Thumb Code   106  timers.o(.text)
-    NVIC_EnableIRQ                           0x00001427   Thumb Code    22  timers.o(.text)
-    .text                                    0x0000144c   Section        0  launchpad_io.o(.text)
-    port_f_enable_port                       0x0000144d   Thumb Code    40  launchpad_io.o(.text)
-    port_f_digital_enable                    0x000014ef   Thumb Code    16  launchpad_io.o(.text)
-    port_f_enable_output                     0x000014ff   Thumb Code    16  launchpad_io.o(.text)
-    port_f_enable_input                      0x0000150f   Thumb Code    16  launchpad_io.o(.text)
-    port_f_enable_pull_up                    0x0000151f   Thumb Code    16  launchpad_io.o(.text)
-    .text                                    0x00001548   Section        0  lcd.o(.text)
-    delayms                                  0x00001549   Thumb Code    26  lcd.o(.text)
-    lcd_write_cmd_u8                         0x00001563   Thumb Code    34  lcd.o(.text)
-    lcd_write_data_u8                        0x00001585   Thumb Code    36  lcd.o(.text)
-    lcd_write_data_u16                       0x000015a9   Thumb Code    60  lcd.o(.text)
-    .text                                    0x00001a24   Section        0  ps2.o(.text)
-    initialize_adc_gpio_pins                 0x00001a25   Thumb Code    64  ps2.o(.text)
-    .text                                    0x00001adc   Section      252  startup_tm4c123.o(.text)
-    $v0                                      0x00001adc   Number         0  startup_tm4c123.o(.text)
-    .text                                    0x00001bd8   Section        0  system_tm4c123.o(.text)
-    getOscClk                                0x00001bd9   Thumb Code   182  system_tm4c123.o(.text)
-    .text                                    0x00001e28   Section        0  validate_uart.o(.text)
-    uart_get_ibrd                            0x00001ed3   Thumb Code    30  validate_uart.o(.text)
-    uart_get_fbrd                            0x00001ef1   Thumb Code    28  validate_uart.o(.text)
-    uart_get_irq_num                         0x00001f0d   Thumb Code    68  validate_uart.o(.text)
-    .text                                    0x00002228   Section        0  validate_sysctl.o(.text)
-    get_gpio_rcgc                            0x00002229   Thumb Code    74  validate_sysctl.o(.text)
-    get_adc_rcgc                             0x00002273   Thumb Code    28  validate_sysctl.o(.text)
-    get_gpt_rcgc                             0x0000228f   Thumb Code    74  validate_sysctl.o(.text)
-    get_uart_rcgc                            0x000022d9   Thumb Code    68  validate_sysctl.o(.text)
-    get_spi_rcgc                             0x0000231d   Thumb Code    48  validate_sysctl.o(.text)
-    .text                                    0x000023f4   Section        0  rand.o(.text)
-    .text                                    0x00002418   Section        0  strlen.o(.text)
-    .text                                    0x00002426   Section        0  uidiv.o(.text)
-    .text                                    0x00002454   Section       36  init.o(.text)
-    i.__0sprintf$6                           0x00002478   Section        0  printf6.o(i.__0sprintf$6)
-    i.__scatterload_copy                     0x000024a0   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x000024ae   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x000024b0   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i._printf_core                           0x000024c0   Section        0  printf6.o(i._printf_core)
-    _printf_core                             0x000024c1   Thumb Code   748  printf6.o(i._printf_core)
-    i._printf_post_padding                   0x000027b0   Section        0  printf6.o(i._printf_post_padding)
-    _printf_post_padding                     0x000027b1   Thumb Code    36  printf6.o(i._printf_post_padding)
-    i._printf_pre_padding                    0x000027d4   Section        0  printf6.o(i._printf_pre_padding)
-    _printf_pre_padding                      0x000027d5   Thumb Code    46  printf6.o(i._printf_pre_padding)
-    i._sputc                                 0x00002802   Section        0  printf6.o(i._sputc)
-    _sputc                                   0x00002803   Thumb Code    10  printf6.o(i._sputc)
-    .constdata                               0x0000280c   Section     1464  main.o(.constdata)
-    .constdata                               0x00002dc4   Section     4560  ece353_hw2_fonts.o(.constdata)
-    .conststring                             0x00003f94   Section       92  validate_uart.o(.conststring)
-    .data                                    0x20000000   Section       58  main.o(.data)
-    button_count                             0x20000038   Data           1  main.o(.data)
-    alien_count                              0x20000039   Data           1  main.o(.data)
-    .data                                    0x2000003c   Section        4  system_tm4c123.o(.data)
-    .data                                    0x20000040   Section        4  rand.o(.data)
-    _rand_state                              0x20000040   Data           4  rand.o(.data)
+    .text                                    0x00000ec0   Section        0  ece353_hw2_fonts.o(.text)
+    .text                                    0x00000f70   Section        0  adc.o(.text)
+    .text                                    0x000010a4   Section        0  gpio_port.o(.text)
+    verify_base_addr                         0x000010a5   Thumb Code    64  gpio_port.o(.text)
+    .text                                    0x00001338   Section        0  timers.o(.text)
+    verify_base_addr                         0x00001339   Thumb Code    64  timers.o(.text)
+    get_clock_masks                          0x00001379   Thumb Code   106  timers.o(.text)
+    __NVIC_EnableIRQ                         0x0000158f   Thumb Code    26  timers.o(.text)
+    .text                                    0x000015b8   Section        0  launchpad_io.o(.text)
+    port_f_enable_port                       0x000015b9   Thumb Code    40  launchpad_io.o(.text)
+    port_f_digital_enable                    0x0000165b   Thumb Code    16  launchpad_io.o(.text)
+    port_f_enable_output                     0x0000166b   Thumb Code    16  launchpad_io.o(.text)
+    port_f_enable_input                      0x0000167b   Thumb Code    16  launchpad_io.o(.text)
+    port_f_enable_pull_up                    0x0000168b   Thumb Code    16  launchpad_io.o(.text)
+    .text                                    0x000016b4   Section        0  lcd.o(.text)
+    delayms                                  0x000016b5   Thumb Code    26  lcd.o(.text)
+    lcd_write_cmd_u8                         0x000016cf   Thumb Code    34  lcd.o(.text)
+    lcd_write_data_u8                        0x000016f1   Thumb Code    36  lcd.o(.text)
+    lcd_write_data_u16                       0x00001715   Thumb Code    60  lcd.o(.text)
+    .text                                    0x00001b90   Section        0  ps2.o(.text)
+    initialize_adc_gpio_pins                 0x00001b91   Thumb Code    64  ps2.o(.text)
+    .text                                    0x00001c48   Section      252  startup_tm4c123.o(.text)
+    $v0                                      0x00001c48   Number         0  startup_tm4c123.o(.text)
+    .text                                    0x00001d44   Section        0  system_tm4c123.o(.text)
+    getOscClk                                0x00001d45   Thumb Code   182  system_tm4c123.o(.text)
+    .text                                    0x00001f94   Section        0  validate_uart.o(.text)
+    uart_get_ibrd                            0x0000203f   Thumb Code    30  validate_uart.o(.text)
+    uart_get_fbrd                            0x0000205d   Thumb Code    28  validate_uart.o(.text)
+    uart_get_irq_num                         0x00002079   Thumb Code    68  validate_uart.o(.text)
+    .text                                    0x00002394   Section        0  validate_sysctl.o(.text)
+    get_gpio_rcgc                            0x00002395   Thumb Code    74  validate_sysctl.o(.text)
+    get_adc_rcgc                             0x000023df   Thumb Code    28  validate_sysctl.o(.text)
+    get_gpt_rcgc                             0x000023fb   Thumb Code    74  validate_sysctl.o(.text)
+    get_uart_rcgc                            0x00002445   Thumb Code    68  validate_sysctl.o(.text)
+    get_spi_rcgc                             0x00002489   Thumb Code    48  validate_sysctl.o(.text)
+    .text                                    0x00002560   Section        0  rand.o(.text)
+    .text                                    0x00002584   Section        0  strlen.o(.text)
+    .text                                    0x00002592   Section        0  uidiv.o(.text)
+    .text                                    0x000025c0   Section       36  init.o(.text)
+    i.__0sprintf$6                           0x000025e4   Section        0  printf6.o(i.__0sprintf$6)
+    i.__scatterload_copy                     0x0000260c   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0000261a   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0000261c   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i._printf_core                           0x0000262c   Section        0  printf6.o(i._printf_core)
+    _printf_core                             0x0000262d   Thumb Code   748  printf6.o(i._printf_core)
+    i._printf_post_padding                   0x0000291c   Section        0  printf6.o(i._printf_post_padding)
+    _printf_post_padding                     0x0000291d   Thumb Code    36  printf6.o(i._printf_post_padding)
+    i._printf_pre_padding                    0x00002940   Section        0  printf6.o(i._printf_pre_padding)
+    _printf_pre_padding                      0x00002941   Thumb Code    46  printf6.o(i._printf_pre_padding)
+    i._sputc                                 0x0000296e   Section        0  printf6.o(i._sputc)
+    _sputc                                   0x0000296f   Thumb Code    10  printf6.o(i._sputc)
+    .constdata                               0x00002978   Section     5742  main.o(.constdata)
+    .constdata                               0x00003fe6   Section     4560  ece353_hw2_fonts.o(.constdata)
+    .conststring                             0x000051b8   Section       92  validate_uart.o(.conststring)
+    .data                                    0x20000000   Section       62  main.o(.data)
+    button_count                             0x2000003c   Data           1  main.o(.data)
+    alien_count                              0x2000003d   Data           1  main.o(.data)
+    .data                                    0x20000040   Section        4  system_tm4c123.o(.data)
+    .data                                    0x20000044   Section        4  rand.o(.data)
+    _rand_state                              0x20000044   Data           4  rand.o(.data)
     STACK                                    0x20000048   Section     4096  startup_tm4c123.o(STACK)
 
     Global Symbols
@@ -550,227 +557,233 @@ Image Symbol Table
     _main_init                               0x00000275   Thumb Code     0  entry9a.o(.ARM.Collect$$$$0000000B)
     __rt_final_cpp                           0x0000027d   Thumb Code     0  entry10a.o(.ARM.Collect$$$$0000000D)
     __rt_final_exit                          0x0000027d   Thumb Code     0  entry11a.o(.ARM.Collect$$$$0000000F)
-    TIMER0A_Handler                          0x00000281   Thumb Code    60  main.o(.text)
-    TIMER0B_Handler                          0x000002bd   Thumb Code    54  main.o(.text)
-    ADC0SS2_Handler                          0x000002f3   Thumb Code    18  main.o(.text)
-    readPS2                                  0x00000305   Thumb Code    36  main.o(.text)
-    initialize_hardware                      0x00000329   Thumb Code    44  main.o(.text)
-    main                                     0x00000355   Thumb Code  2544  main.o(.text)
-    lcd_print_stringXY                       0x00000d61   Thumb Code   170  ece353_hw2_fonts.o(.text)
-    initialize_adc                           0x00000e11   Thumb Code   108  adc.o(.text)
-    initialize_adc0                          0x00000e7d   Thumb Code   122  adc.o(.text)
-    get_adc_value                            0x00000ef7   Thumb Code    58  adc.o(.text)
-    gpio_get_irq_num                         0x00000f7d   Thumb Code    74  gpio_port.o(.text)
-    gpio_enable_port                         0x00000fc7   Thumb Code   168  gpio_port.o(.text)
-    gpio_config_digital_enable               0x0000106f   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_enable_output                0x00001091   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_enable_input                 0x000010b3   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_enable_pullup                0x000010d5   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_enable_pulldown              0x000010f7   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_analog_enable                0x00001119   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_alternate_function           0x0000113b   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_port_control                 0x0000115d   Thumb Code    44  gpio_port.o(.text)
-    gpio_config_open_drain                   0x00001189   Thumb Code    34  gpio_port.o(.text)
-    gpio_config_falling_edge_irq             0x000011ab   Thumb Code     6  gpio_port.o(.text)
-    gp_timer_wait                            0x0000127b   Thumb Code    70  timers.o(.text)
-    gp_timer_config_32                       0x000012c1   Thumb Code   146  timers.o(.text)
-    gp_timer_config_16                       0x00001353   Thumb Code   186  timers.o(.text)
-    clearInterrupt                           0x0000140d   Thumb Code    26  timers.o(.text)
-    lp_io_set_pin                            0x00001475   Thumb Code    18  launchpad_io.o(.text)
-    lp_io_clear_pin                          0x00001487   Thumb Code    18  launchpad_io.o(.text)
-    lp_io_read_pin                           0x00001499   Thumb Code    22  launchpad_io.o(.text)
-    lp_io_init                               0x000014af   Thumb Code    32  launchpad_io.o(.text)
-    lp_io_init_SW1_LED                       0x000014cf   Thumb Code    32  launchpad_io.o(.text)
-    lcd_set_pos                              0x000015e5   Thumb Code    58  lcd.o(.text)
-    lcd_clear_screen                         0x0000161f   Thumb Code    52  lcd.o(.text)
-    lcd_draw_image                           0x00001653   Thumb Code   184  lcd.o(.text)
-    lcd_config_gpio                          0x0000170b   Thumb Code   222  lcd.o(.text)
-    lcd_config_screen                        0x000017e9   Thumb Code   566  lcd.o(.text)
-    adc0_ps2_initialize                      0x00001a65   Thumb Code    64  ps2.o(.text)
-    ps2_initialize                           0x00001aa5   Thumb Code    14  ps2.o(.text)
-    ps2_get_x                                0x00001ab3   Thumb Code    16  ps2.o(.text)
-    ps2_get_y                                0x00001ac3   Thumb Code    16  ps2.o(.text)
-    Reset_Handler                            0x00001add   Thumb Code     8  startup_tm4c123.o(.text)
-    NMI_Handler                              0x00001ae5   Thumb Code     2  startup_tm4c123.o(.text)
-    HardFault_Handler                        0x00001ae7   Thumb Code     2  startup_tm4c123.o(.text)
-    MemManage_Handler                        0x00001ae9   Thumb Code     2  startup_tm4c123.o(.text)
-    BusFault_Handler                         0x00001aeb   Thumb Code     2  startup_tm4c123.o(.text)
-    UsageFault_Handler                       0x00001aed   Thumb Code     2  startup_tm4c123.o(.text)
-    SVC_Handler                              0x00001aef   Thumb Code     2  startup_tm4c123.o(.text)
-    DebugMon_Handler                         0x00001af1   Thumb Code     2  startup_tm4c123.o(.text)
-    PendSV_Handler                           0x00001af3   Thumb Code     2  startup_tm4c123.o(.text)
-    SysTick_Handler                          0x00001af5   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOA_Handler                            0x00001af7   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOB_Handler                            0x00001af9   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOC_Handler                            0x00001afb   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOD_Handler                            0x00001afd   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOE_Handler                            0x00001aff   Thumb Code     2  startup_tm4c123.o(.text)
-    UART0_Handler                            0x00001b01   Thumb Code     2  startup_tm4c123.o(.text)
-    UART1_Handler                            0x00001b03   Thumb Code     2  startup_tm4c123.o(.text)
-    SSI0_Handler                             0x00001b05   Thumb Code     2  startup_tm4c123.o(.text)
-    I2C0_Handler                             0x00001b07   Thumb Code     2  startup_tm4c123.o(.text)
-    PMW0_FAULT_Handler                       0x00001b09   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM0_0_Handler                           0x00001b0b   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM0_1_Handler                           0x00001b0d   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM0_2_Handler                           0x00001b0f   Thumb Code     2  startup_tm4c123.o(.text)
-    QEI0_Handler                             0x00001b11   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC0SS0_Handler                          0x00001b13   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC0SS1_Handler                          0x00001b15   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC0SS3_Handler                          0x00001b19   Thumb Code     2  startup_tm4c123.o(.text)
-    WDT0_Handler                             0x00001b1b   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER1A_Handler                          0x00001b21   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER1B_Handler                          0x00001b23   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER2A_Handler                          0x00001b25   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER2B_Handler                          0x00001b27   Thumb Code     2  startup_tm4c123.o(.text)
-    COMP0_Handler                            0x00001b29   Thumb Code     2  startup_tm4c123.o(.text)
-    COMP1_Handler                            0x00001b2b   Thumb Code     2  startup_tm4c123.o(.text)
-    COMP2_Handler                            0x00001b2d   Thumb Code     2  startup_tm4c123.o(.text)
-    SYSCTL_Handler                           0x00001b2f   Thumb Code     2  startup_tm4c123.o(.text)
-    FLASH_Handler                            0x00001b31   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOF_Handler                            0x00001b33   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOG_Handler                            0x00001b35   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOH_Handler                            0x00001b37   Thumb Code     2  startup_tm4c123.o(.text)
-    UART2_Handler                            0x00001b39   Thumb Code     2  startup_tm4c123.o(.text)
-    SSI1_Handler                             0x00001b3b   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER3A_Handler                          0x00001b3d   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER3B_Handler                          0x00001b3f   Thumb Code     2  startup_tm4c123.o(.text)
-    I2C1_Handler                             0x00001b41   Thumb Code     2  startup_tm4c123.o(.text)
-    QEI1_Handler                             0x00001b43   Thumb Code     2  startup_tm4c123.o(.text)
-    CAN0_Handler                             0x00001b45   Thumb Code     2  startup_tm4c123.o(.text)
-    CAN1_Handler                             0x00001b47   Thumb Code     2  startup_tm4c123.o(.text)
-    CAN2_Handler                             0x00001b49   Thumb Code     2  startup_tm4c123.o(.text)
-    HIB_Handler                              0x00001b4b   Thumb Code     2  startup_tm4c123.o(.text)
-    USB0_Handler                             0x00001b4d   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM0_3_Handler                           0x00001b4f   Thumb Code     2  startup_tm4c123.o(.text)
-    UDMA_Handler                             0x00001b51   Thumb Code     2  startup_tm4c123.o(.text)
-    UDMAERR_Handler                          0x00001b53   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC1SS0_Handler                          0x00001b55   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC1SS1_Handler                          0x00001b57   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC1SS2_Handler                          0x00001b59   Thumb Code     2  startup_tm4c123.o(.text)
-    ADC1SS3_Handler                          0x00001b5b   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOJ_Handler                            0x00001b5d   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOK_Handler                            0x00001b5f   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOL_Handler                            0x00001b61   Thumb Code     2  startup_tm4c123.o(.text)
-    SSI2_Handler                             0x00001b63   Thumb Code     2  startup_tm4c123.o(.text)
-    SSI3_Handler                             0x00001b65   Thumb Code     2  startup_tm4c123.o(.text)
-    UART3_Handler                            0x00001b67   Thumb Code     2  startup_tm4c123.o(.text)
-    UART4_Handler                            0x00001b69   Thumb Code     2  startup_tm4c123.o(.text)
-    UART5_Handler                            0x00001b6b   Thumb Code     2  startup_tm4c123.o(.text)
-    UART6_Handler                            0x00001b6d   Thumb Code     2  startup_tm4c123.o(.text)
-    UART7_Handler                            0x00001b6f   Thumb Code     2  startup_tm4c123.o(.text)
-    I2C2_Handler                             0x00001b71   Thumb Code     2  startup_tm4c123.o(.text)
-    I2C3_Handler                             0x00001b73   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER4A_Handler                          0x00001b75   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER4B_Handler                          0x00001b77   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER5A_Handler                          0x00001b79   Thumb Code     2  startup_tm4c123.o(.text)
-    TIMER5B_Handler                          0x00001b7b   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER0A_Handler                         0x00001b7d   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER0B_Handler                         0x00001b7f   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER1A_Handler                         0x00001b81   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER1B_Handler                         0x00001b83   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER2A_Handler                         0x00001b85   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER2B_Handler                         0x00001b87   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER3A_Handler                         0x00001b89   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER3B_Handler                         0x00001b8b   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER4A_Handler                         0x00001b8d   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER4B_Handler                         0x00001b8f   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER5A_Handler                         0x00001b91   Thumb Code     2  startup_tm4c123.o(.text)
-    WTIMER5B_Handler                         0x00001b93   Thumb Code     2  startup_tm4c123.o(.text)
-    FPU_Handler                              0x00001b95   Thumb Code     2  startup_tm4c123.o(.text)
-    I2C4_Handler                             0x00001b97   Thumb Code     2  startup_tm4c123.o(.text)
-    I2C5_Handler                             0x00001b99   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOM_Handler                            0x00001b9b   Thumb Code     2  startup_tm4c123.o(.text)
-    GPION_Handler                            0x00001b9d   Thumb Code     2  startup_tm4c123.o(.text)
-    QEI2_Handler                             0x00001b9f   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP0_Handler                           0x00001ba1   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP1_Handler                           0x00001ba3   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP2_Handler                           0x00001ba5   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP3_Handler                           0x00001ba7   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP4_Handler                           0x00001ba9   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP5_Handler                           0x00001bab   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP6_Handler                           0x00001bad   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOP7_Handler                           0x00001baf   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ0_Handler                           0x00001bb1   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ1_Handler                           0x00001bb3   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ2_Handler                           0x00001bb5   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ3_Handler                           0x00001bb7   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ4_Handler                           0x00001bb9   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ5_Handler                           0x00001bbb   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ6_Handler                           0x00001bbd   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOQ7_Handler                           0x00001bbf   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOR_Handler                            0x00001bc1   Thumb Code     2  startup_tm4c123.o(.text)
-    GPIOS_Handler                            0x00001bc3   Thumb Code     2  startup_tm4c123.o(.text)
-    PMW1_0_Handler                           0x00001bc5   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM1_1_Handler                           0x00001bc7   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM1_2_Handler                           0x00001bc9   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM1_3_Handler                           0x00001bcb   Thumb Code     2  startup_tm4c123.o(.text)
-    PWM1_FAULT_Handler                       0x00001bcd   Thumb Code     2  startup_tm4c123.o(.text)
-    SystemCoreClockUpdate                    0x00001c8f   Thumb Code   184  system_tm4c123.o(.text)
-    SystemInit                               0x00001d47   Thumb Code   112  system_tm4c123.o(.text)
-    put_string                               0x00001e29   Thumb Code    34  validate_uart.o(.text)
-    validate_print_ice_validation_info_start 0x00001e4b   Thumb Code    68  validate_uart.o(.text)
-    validate_print_ice_validation_info_end   0x00001e8f   Thumb Code    68  validate_uart.o(.text)
-    staff_uart_config_gpio                   0x00001f51   Thumb Code    82  validate_uart.o(.text)
-    staff_uart_config_polling                0x00001fa3   Thumb Code    68  validate_uart.o(.text)
-    validate_uart_baud_rate                  0x00001fe7   Thumb Code    26  validate_uart.o(.text)
-    validate_uart_line_control               0x00002001   Thumb Code    18  validate_uart.o(.text)
-    validate_uart_interrupt_mask             0x00002013   Thumb Code    18  validate_uart.o(.text)
-    validate_uart_control                    0x00002025   Thumb Code    18  validate_uart.o(.text)
-    validate_uart_interrupts_enabled         0x00002037   Thumb Code    44  validate_uart.o(.text)
-    put_char                                 0x00002063   Thumb Code    20  validate_uart.o(.text)
-    get_char                                 0x00002077   Thumb Code    62  validate_uart.o(.text)
-    get_string                               0x000020b5   Thumb Code    40  validate_uart.o(.text)
-    initialize_serial_debug                  0x000020dd   Thumb Code    12  validate_uart.o(.text)
-    print_test_status                        0x000020e9   Thumb Code    52  validate_uart.o(.text)
-    validate_uart                            0x0000211d   Thumb Code   126  validate_uart.o(.text)
-    validate_gpio_rcgc                       0x0000234d   Thumb Code    26  validate_sysctl.o(.text)
-    validate_adc_rcgc                        0x00002367   Thumb Code    28  validate_sysctl.o(.text)
-    validate_gpt_rcgc                        0x00002383   Thumb Code    28  validate_sysctl.o(.text)
-    validate_uart_rcgc                       0x0000239f   Thumb Code    28  validate_sysctl.o(.text)
-    validate_spi_rcgc                        0x000023bb   Thumb Code    28  validate_sysctl.o(.text)
-    rand                                     0x000023f5   Thumb Code    20  rand.o(.text)
-    srand                                    0x00002409   Thumb Code     6  rand.o(.text)
-    strlen                                   0x00002419   Thumb Code    14  strlen.o(.text)
-    __aeabi_uidiv                            0x00002427   Thumb Code     0  uidiv.o(.text)
-    __aeabi_uidivmod                         0x00002427   Thumb Code    44  uidiv.o(.text)
-    __scatterload                            0x00002455   Thumb Code    28  init.o(.text)
-    __scatterload_rt2                        0x00002455   Thumb Code     0  init.o(.text)
-    __0sprintf$6                             0x00002479   Thumb Code    34  printf6.o(i.__0sprintf$6)
-    __1sprintf$6                             0x00002479   Thumb Code     0  printf6.o(i.__0sprintf$6)
-    __2sprintf                               0x00002479   Thumb Code     0  printf6.o(i.__0sprintf$6)
-    __scatterload_copy                       0x000024a1   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x000024af   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x000024b1   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    blackBarBitmap                           0x0000280c   Data          60  main.o(.constdata)
-    blackBarWidthPixels                      0x00002848   Data           1  main.o(.constdata)
-    blackBarHeightPixels                     0x00002849   Data           1  main.o(.constdata)
-    alienBitmap                              0x0000284a   Data          80  main.o(.constdata)
-    alienWidthPixels                         0x0000289a   Data           1  main.o(.constdata)
-    alienHeightPixels                        0x0000289b   Data           1  main.o(.constdata)
-    alien2Bitmap                             0x0000289c   Data          80  main.o(.constdata)
-    alien2WidthPixels                        0x000028ec   Data           1  main.o(.constdata)
-    alien2HeightPixels                       0x000028ed   Data           1  main.o(.constdata)
-    spaceshipBitmap                          0x000028ee   Data         116  main.o(.constdata)
-    spaceshipWidthPixels                     0x00002962   Data           1  main.o(.constdata)
-    spaceshipHeightPixels                    0x00002963   Data           1  main.o(.constdata)
-    explosionBitmap                          0x00002964   Data          80  main.o(.constdata)
-    explosionWidthPixels                     0x000029b4   Data           1  main.o(.constdata)
-    explosionHeightPixels                    0x000029b5   Data           1  main.o(.constdata)
-    bulletBitmap                             0x000029b6   Data           6  main.o(.constdata)
-    bulletWidthPixels                        0x000029bc   Data           1  main.o(.constdata)
-    bulletHeightPixels                       0x000029bd   Data           1  main.o(.constdata)
-    alienBulletBitmap                        0x000029be   Data          12  main.o(.constdata)
-    alienBulletWidthPixels                   0x000029ca   Data           1  main.o(.constdata)
-    alienBulletHeightPixels                  0x000029cb   Data           1  main.o(.constdata)
-    startBitmap                              0x000029cc   Data         494  main.o(.constdata)
-    startWidthPixels                         0x00002bba   Data           1  main.o(.constdata)
-    startHeightPixels                        0x00002bbb   Data           1  main.o(.constdata)
-    scoresBitmap                             0x00002bbc   Data         518  main.o(.constdata)
-    scoresWidthPixels                        0x00002dc2   Data           1  main.o(.constdata)
-    scoresHeightPixels                       0x00002dc3   Data           1  main.o(.constdata)
-    sitkaSmall_12ptBitmaps                   0x00002dc4   Data        4560  ece353_hw2_fonts.o(.constdata)
-    Region$$Table$$Base                      0x00003ff0   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00004010   Number         0  anon$$obj.o(Region$$Table)
+    TIMER0A_Handler                          0x00000281   Thumb Code    66  main.o(.text)
+    TIMER0B_Handler                          0x000002c3   Thumb Code    54  main.o(.text)
+    ADC0SS2_Handler                          0x000002f9   Thumb Code    18  main.o(.text)
+    readPS2                                  0x0000030b   Thumb Code    36  main.o(.text)
+    initialize_hardware                      0x0000032f   Thumb Code    44  main.o(.text)
+    main                                     0x0000035b   Thumb Code  2872  main.o(.text)
+    lcd_print_stringXY                       0x00000ec1   Thumb Code   170  ece353_hw2_fonts.o(.text)
+    initialize_adc                           0x00000f71   Thumb Code   108  adc.o(.text)
+    initialize_adc0                          0x00000fdd   Thumb Code   130  adc.o(.text)
+    get_adc_value                            0x0000105f   Thumb Code    58  adc.o(.text)
+    gpio_get_irq_num                         0x000010e5   Thumb Code    74  gpio_port.o(.text)
+    gpio_enable_port                         0x0000112f   Thumb Code   168  gpio_port.o(.text)
+    gpio_config_digital_enable               0x000011d7   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_enable_output                0x000011f9   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_enable_input                 0x0000121b   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_enable_pullup                0x0000123d   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_enable_pulldown              0x0000125f   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_analog_enable                0x00001281   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_alternate_function           0x000012a3   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_port_control                 0x000012c5   Thumb Code    44  gpio_port.o(.text)
+    gpio_config_open_drain                   0x000012f1   Thumb Code    34  gpio_port.o(.text)
+    gpio_config_falling_edge_irq             0x00001313   Thumb Code     6  gpio_port.o(.text)
+    gp_timer_wait                            0x000013e3   Thumb Code    70  timers.o(.text)
+    gp_timer_config_32                       0x00001429   Thumb Code   146  timers.o(.text)
+    gp_timer_config_16                       0x000014bb   Thumb Code   186  timers.o(.text)
+    clearInterrupt                           0x00001575   Thumb Code    26  timers.o(.text)
+    lp_io_set_pin                            0x000015e1   Thumb Code    18  launchpad_io.o(.text)
+    lp_io_clear_pin                          0x000015f3   Thumb Code    18  launchpad_io.o(.text)
+    lp_io_read_pin                           0x00001605   Thumb Code    22  launchpad_io.o(.text)
+    lp_io_init                               0x0000161b   Thumb Code    32  launchpad_io.o(.text)
+    lp_io_init_SW1_LED                       0x0000163b   Thumb Code    32  launchpad_io.o(.text)
+    lcd_set_pos                              0x00001751   Thumb Code    58  lcd.o(.text)
+    lcd_clear_screen                         0x0000178b   Thumb Code    52  lcd.o(.text)
+    lcd_draw_image                           0x000017bf   Thumb Code   184  lcd.o(.text)
+    lcd_config_gpio                          0x00001877   Thumb Code   222  lcd.o(.text)
+    lcd_config_screen                        0x00001955   Thumb Code   566  lcd.o(.text)
+    adc0_ps2_initialize                      0x00001bd1   Thumb Code    64  ps2.o(.text)
+    ps2_initialize                           0x00001c11   Thumb Code    14  ps2.o(.text)
+    ps2_get_x                                0x00001c1f   Thumb Code    16  ps2.o(.text)
+    ps2_get_y                                0x00001c2f   Thumb Code    16  ps2.o(.text)
+    Reset_Handler                            0x00001c49   Thumb Code     8  startup_tm4c123.o(.text)
+    NMI_Handler                              0x00001c51   Thumb Code     2  startup_tm4c123.o(.text)
+    HardFault_Handler                        0x00001c53   Thumb Code     2  startup_tm4c123.o(.text)
+    MemManage_Handler                        0x00001c55   Thumb Code     2  startup_tm4c123.o(.text)
+    BusFault_Handler                         0x00001c57   Thumb Code     2  startup_tm4c123.o(.text)
+    UsageFault_Handler                       0x00001c59   Thumb Code     2  startup_tm4c123.o(.text)
+    SVC_Handler                              0x00001c5b   Thumb Code     2  startup_tm4c123.o(.text)
+    DebugMon_Handler                         0x00001c5d   Thumb Code     2  startup_tm4c123.o(.text)
+    PendSV_Handler                           0x00001c5f   Thumb Code     2  startup_tm4c123.o(.text)
+    SysTick_Handler                          0x00001c61   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOA_Handler                            0x00001c63   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOB_Handler                            0x00001c65   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOC_Handler                            0x00001c67   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOD_Handler                            0x00001c69   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOE_Handler                            0x00001c6b   Thumb Code     2  startup_tm4c123.o(.text)
+    UART0_Handler                            0x00001c6d   Thumb Code     2  startup_tm4c123.o(.text)
+    UART1_Handler                            0x00001c6f   Thumb Code     2  startup_tm4c123.o(.text)
+    SSI0_Handler                             0x00001c71   Thumb Code     2  startup_tm4c123.o(.text)
+    I2C0_Handler                             0x00001c73   Thumb Code     2  startup_tm4c123.o(.text)
+    PMW0_FAULT_Handler                       0x00001c75   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM0_0_Handler                           0x00001c77   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM0_1_Handler                           0x00001c79   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM0_2_Handler                           0x00001c7b   Thumb Code     2  startup_tm4c123.o(.text)
+    QEI0_Handler                             0x00001c7d   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC0SS0_Handler                          0x00001c7f   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC0SS1_Handler                          0x00001c81   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC0SS3_Handler                          0x00001c85   Thumb Code     2  startup_tm4c123.o(.text)
+    WDT0_Handler                             0x00001c87   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER1A_Handler                          0x00001c8d   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER1B_Handler                          0x00001c8f   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER2A_Handler                          0x00001c91   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER2B_Handler                          0x00001c93   Thumb Code     2  startup_tm4c123.o(.text)
+    COMP0_Handler                            0x00001c95   Thumb Code     2  startup_tm4c123.o(.text)
+    COMP1_Handler                            0x00001c97   Thumb Code     2  startup_tm4c123.o(.text)
+    COMP2_Handler                            0x00001c99   Thumb Code     2  startup_tm4c123.o(.text)
+    SYSCTL_Handler                           0x00001c9b   Thumb Code     2  startup_tm4c123.o(.text)
+    FLASH_Handler                            0x00001c9d   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOF_Handler                            0x00001c9f   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOG_Handler                            0x00001ca1   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOH_Handler                            0x00001ca3   Thumb Code     2  startup_tm4c123.o(.text)
+    UART2_Handler                            0x00001ca5   Thumb Code     2  startup_tm4c123.o(.text)
+    SSI1_Handler                             0x00001ca7   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER3A_Handler                          0x00001ca9   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER3B_Handler                          0x00001cab   Thumb Code     2  startup_tm4c123.o(.text)
+    I2C1_Handler                             0x00001cad   Thumb Code     2  startup_tm4c123.o(.text)
+    QEI1_Handler                             0x00001caf   Thumb Code     2  startup_tm4c123.o(.text)
+    CAN0_Handler                             0x00001cb1   Thumb Code     2  startup_tm4c123.o(.text)
+    CAN1_Handler                             0x00001cb3   Thumb Code     2  startup_tm4c123.o(.text)
+    CAN2_Handler                             0x00001cb5   Thumb Code     2  startup_tm4c123.o(.text)
+    HIB_Handler                              0x00001cb7   Thumb Code     2  startup_tm4c123.o(.text)
+    USB0_Handler                             0x00001cb9   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM0_3_Handler                           0x00001cbb   Thumb Code     2  startup_tm4c123.o(.text)
+    UDMA_Handler                             0x00001cbd   Thumb Code     2  startup_tm4c123.o(.text)
+    UDMAERR_Handler                          0x00001cbf   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC1SS0_Handler                          0x00001cc1   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC1SS1_Handler                          0x00001cc3   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC1SS2_Handler                          0x00001cc5   Thumb Code     2  startup_tm4c123.o(.text)
+    ADC1SS3_Handler                          0x00001cc7   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOJ_Handler                            0x00001cc9   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOK_Handler                            0x00001ccb   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOL_Handler                            0x00001ccd   Thumb Code     2  startup_tm4c123.o(.text)
+    SSI2_Handler                             0x00001ccf   Thumb Code     2  startup_tm4c123.o(.text)
+    SSI3_Handler                             0x00001cd1   Thumb Code     2  startup_tm4c123.o(.text)
+    UART3_Handler                            0x00001cd3   Thumb Code     2  startup_tm4c123.o(.text)
+    UART4_Handler                            0x00001cd5   Thumb Code     2  startup_tm4c123.o(.text)
+    UART5_Handler                            0x00001cd7   Thumb Code     2  startup_tm4c123.o(.text)
+    UART6_Handler                            0x00001cd9   Thumb Code     2  startup_tm4c123.o(.text)
+    UART7_Handler                            0x00001cdb   Thumb Code     2  startup_tm4c123.o(.text)
+    I2C2_Handler                             0x00001cdd   Thumb Code     2  startup_tm4c123.o(.text)
+    I2C3_Handler                             0x00001cdf   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER4A_Handler                          0x00001ce1   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER4B_Handler                          0x00001ce3   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER5A_Handler                          0x00001ce5   Thumb Code     2  startup_tm4c123.o(.text)
+    TIMER5B_Handler                          0x00001ce7   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER0A_Handler                         0x00001ce9   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER0B_Handler                         0x00001ceb   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER1A_Handler                         0x00001ced   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER1B_Handler                         0x00001cef   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER2A_Handler                         0x00001cf1   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER2B_Handler                         0x00001cf3   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER3A_Handler                         0x00001cf5   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER3B_Handler                         0x00001cf7   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER4A_Handler                         0x00001cf9   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER4B_Handler                         0x00001cfb   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER5A_Handler                         0x00001cfd   Thumb Code     2  startup_tm4c123.o(.text)
+    WTIMER5B_Handler                         0x00001cff   Thumb Code     2  startup_tm4c123.o(.text)
+    FPU_Handler                              0x00001d01   Thumb Code     2  startup_tm4c123.o(.text)
+    I2C4_Handler                             0x00001d03   Thumb Code     2  startup_tm4c123.o(.text)
+    I2C5_Handler                             0x00001d05   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOM_Handler                            0x00001d07   Thumb Code     2  startup_tm4c123.o(.text)
+    GPION_Handler                            0x00001d09   Thumb Code     2  startup_tm4c123.o(.text)
+    QEI2_Handler                             0x00001d0b   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP0_Handler                           0x00001d0d   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP1_Handler                           0x00001d0f   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP2_Handler                           0x00001d11   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP3_Handler                           0x00001d13   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP4_Handler                           0x00001d15   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP5_Handler                           0x00001d17   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP6_Handler                           0x00001d19   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOP7_Handler                           0x00001d1b   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ0_Handler                           0x00001d1d   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ1_Handler                           0x00001d1f   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ2_Handler                           0x00001d21   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ3_Handler                           0x00001d23   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ4_Handler                           0x00001d25   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ5_Handler                           0x00001d27   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ6_Handler                           0x00001d29   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOQ7_Handler                           0x00001d2b   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOR_Handler                            0x00001d2d   Thumb Code     2  startup_tm4c123.o(.text)
+    GPIOS_Handler                            0x00001d2f   Thumb Code     2  startup_tm4c123.o(.text)
+    PMW1_0_Handler                           0x00001d31   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM1_1_Handler                           0x00001d33   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM1_2_Handler                           0x00001d35   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM1_3_Handler                           0x00001d37   Thumb Code     2  startup_tm4c123.o(.text)
+    PWM1_FAULT_Handler                       0x00001d39   Thumb Code     2  startup_tm4c123.o(.text)
+    SystemCoreClockUpdate                    0x00001dfb   Thumb Code   184  system_tm4c123.o(.text)
+    SystemInit                               0x00001eb3   Thumb Code   112  system_tm4c123.o(.text)
+    put_string                               0x00001f95   Thumb Code    34  validate_uart.o(.text)
+    validate_print_ice_validation_info_start 0x00001fb7   Thumb Code    68  validate_uart.o(.text)
+    validate_print_ice_validation_info_end   0x00001ffb   Thumb Code    68  validate_uart.o(.text)
+    staff_uart_config_gpio                   0x000020bd   Thumb Code    82  validate_uart.o(.text)
+    staff_uart_config_polling                0x0000210f   Thumb Code    68  validate_uart.o(.text)
+    validate_uart_baud_rate                  0x00002153   Thumb Code    26  validate_uart.o(.text)
+    validate_uart_line_control               0x0000216d   Thumb Code    18  validate_uart.o(.text)
+    validate_uart_interrupt_mask             0x0000217f   Thumb Code    18  validate_uart.o(.text)
+    validate_uart_control                    0x00002191   Thumb Code    18  validate_uart.o(.text)
+    validate_uart_interrupts_enabled         0x000021a3   Thumb Code    44  validate_uart.o(.text)
+    put_char                                 0x000021cf   Thumb Code    20  validate_uart.o(.text)
+    get_char                                 0x000021e3   Thumb Code    62  validate_uart.o(.text)
+    get_string                               0x00002221   Thumb Code    40  validate_uart.o(.text)
+    initialize_serial_debug                  0x00002249   Thumb Code    12  validate_uart.o(.text)
+    print_test_status                        0x00002255   Thumb Code    52  validate_uart.o(.text)
+    validate_uart                            0x00002289   Thumb Code   126  validate_uart.o(.text)
+    validate_gpio_rcgc                       0x000024b9   Thumb Code    26  validate_sysctl.o(.text)
+    validate_adc_rcgc                        0x000024d3   Thumb Code    28  validate_sysctl.o(.text)
+    validate_gpt_rcgc                        0x000024ef   Thumb Code    28  validate_sysctl.o(.text)
+    validate_uart_rcgc                       0x0000250b   Thumb Code    28  validate_sysctl.o(.text)
+    validate_spi_rcgc                        0x00002527   Thumb Code    28  validate_sysctl.o(.text)
+    rand                                     0x00002561   Thumb Code    20  rand.o(.text)
+    srand                                    0x00002575   Thumb Code     6  rand.o(.text)
+    strlen                                   0x00002585   Thumb Code    14  strlen.o(.text)
+    __aeabi_uidiv                            0x00002593   Thumb Code     0  uidiv.o(.text)
+    __aeabi_uidivmod                         0x00002593   Thumb Code    44  uidiv.o(.text)
+    __scatterload                            0x000025c1   Thumb Code    28  init.o(.text)
+    __scatterload_rt2                        0x000025c1   Thumb Code     0  init.o(.text)
+    __0sprintf$6                             0x000025e5   Thumb Code    34  printf6.o(i.__0sprintf$6)
+    __1sprintf$6                             0x000025e5   Thumb Code     0  printf6.o(i.__0sprintf$6)
+    __2sprintf                               0x000025e5   Thumb Code     0  printf6.o(i.__0sprintf$6)
+    __scatterload_copy                       0x0000260d   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0000261b   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0000261d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    blackBarBitmap                           0x00002978   Data          60  main.o(.constdata)
+    blackBarWidthPixels                      0x000029b4   Data           1  main.o(.constdata)
+    blackBarHeightPixels                     0x000029b5   Data           1  main.o(.constdata)
+    alienBitmap                              0x000029b6   Data          80  main.o(.constdata)
+    alienWidthPixels                         0x00002a06   Data           1  main.o(.constdata)
+    alienHeightPixels                        0x00002a07   Data           1  main.o(.constdata)
+    alien2Bitmap                             0x00002a08   Data          80  main.o(.constdata)
+    alien2WidthPixels                        0x00002a58   Data           1  main.o(.constdata)
+    alien2HeightPixels                       0x00002a59   Data           1  main.o(.constdata)
+    spaceshipBitmap                          0x00002a5a   Data         116  main.o(.constdata)
+    spaceshipWidthPixels                     0x00002ace   Data           1  main.o(.constdata)
+    spaceshipHeightPixels                    0x00002acf   Data           1  main.o(.constdata)
+    explosionBitmap                          0x00002ad0   Data          80  main.o(.constdata)
+    explosionWidthPixels                     0x00002b20   Data           1  main.o(.constdata)
+    explosionHeightPixels                    0x00002b21   Data           1  main.o(.constdata)
+    bulletBitmap                             0x00002b22   Data           6  main.o(.constdata)
+    bulletWidthPixels                        0x00002b28   Data           1  main.o(.constdata)
+    bulletHeightPixels                       0x00002b29   Data           1  main.o(.constdata)
+    alienBulletBitmap                        0x00002b2a   Data          15  main.o(.constdata)
+    alienBulletWidthPixels                   0x00002b39   Data           1  main.o(.constdata)
+    alienBulletHeightPixels                  0x00002b3a   Data           1  main.o(.constdata)
+    startBitmap                              0x00002b3b   Data         494  main.o(.constdata)
+    startWidthPixels                         0x00002d29   Data           1  main.o(.constdata)
+    startHeightPixels                        0x00002d2a   Data           1  main.o(.constdata)
+    scoresBitmap                             0x00002d2b   Data         518  main.o(.constdata)
+    scoresWidthPixels                        0x00002f31   Data           1  main.o(.constdata)
+    scoresHeightPixels                       0x00002f32   Data           1  main.o(.constdata)
+    gameOverBitmap                           0x00002f33   Data        2808  main.o(.constdata)
+    gameOverWidthPixels                      0x00003a2b   Data           1  main.o(.constdata)
+    gameOverHeightPixels                     0x00003a2c   Data           1  main.o(.constdata)
+    maxScoreBitmap                           0x00003a2d   Data        1463  main.o(.constdata)
+    maxScoreWidthPixels                      0x00003fe4   Data           1  main.o(.constdata)
+    maxScoreHeightPixels                     0x00003fe5   Data           1  main.o(.constdata)
+    sitkaSmall_12ptBitmaps                   0x00003fe6   Data        4560  ece353_hw2_fonts.o(.constdata)
+    Region$$Table$$Base                      0x00005214   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00005234   Number         0  anon$$obj.o(Region$$Table)
     group                                    0x20000000   Data           8  main.o(.data)
     individual_1                             0x20000008   Data          17  main.o(.data)
     individual_2                             0x20000019   Data          14  main.o(.data)
@@ -781,7 +794,8 @@ Image Symbol Table
     yVal                                     0x20000030   Data           4  main.o(.data)
     xPos                                     0x20000034   Data           2  main.o(.data)
     yPos                                     0x20000036   Data           2  main.o(.data)
-    SystemCoreClock                          0x2000003c   Data           4  system_tm4c123.o(.data)
+    roundNum                                 0x20000038   Data           4  main.o(.data)
+    SystemCoreClock                          0x20000040   Data           4  system_tm4c123.o(.data)
     __initial_sp                             0x20001048   Data           0  startup_tm4c123.o(STACK)
 
 
@@ -790,72 +804,72 @@ Image Symbol Table
 
 Memory Map of the image
 
-  Image Entry point : 0x00001add
+  Image Entry point : 0x00001c49
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00004054, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x0000527c, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Base: 0x00000000, Size: 0x00004010, Max: 0xffffffff, ABSOLUTE)
-
-    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x00000000   0x0000026c   Data   RO          250    RESET               startup_tm4c123.o
-    0x0000026c   0x00000000   Code   RO          387  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x0000026c   0x00000004   Code   RO          656    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x00000270   0x00000004   Code   RO          659    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x00000274   0x00000000   Code   RO          661    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x00000274   0x00000000   Code   RO          663    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x00000274   0x00000008   Code   RO          664    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x0000027c   0x00000000   Code   RO          666    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x0000027c   0x00000000   Code   RO          668    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x0000027c   0x00000004   Code   RO          657    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
-    0x00000280   0x00000ae0   Code   RO            3    .text               main.o
-    0x00000d60   0x000000b0   Code   RO          100    .text               ece353_hw2_fonts.o
-    0x00000e10   0x0000012c   Code   RO          126    .text               adc.o
-    0x00000f3c   0x00000294   Code   RO          150    .text               gpio_port.o
-    0x000011d0   0x0000027c   Code   RO          170    .text               timers.o
-    0x0000144c   0x000000fc   Code   RO          190    .text               launchpad_io.o
-    0x00001548   0x000004dc   Code   RO          210    .text               lcd.o
-    0x00001a24   0x000000b8   Code   RO          230    .text               ps2.o
-    0x00001adc   0x000000fc   Code   RO          251  * .text               startup_tm4c123.o
-    0x00001bd8   0x00000250   Code   RO          257    .text               system_tm4c123.o
-    0x00001e28   0x00000400   Code   RO          284    .text               ECE353-Validate.lib(validate_uart.o)
-    0x00002228   0x000001cc   Code   RO          366    .text               ECE353-Validate.lib(validate_sysctl.o)
-    0x000023f4   0x00000024   Code   RO          390    .text               mc_w.l(rand.o)
-    0x00002418   0x0000000e   Code   RO          393    .text               mc_w.l(strlen.o)
-    0x00002426   0x0000002c   Code   RO          673    .text               mc_w.l(uidiv.o)
-    0x00002452   0x00000002   PAD
-    0x00002454   0x00000024   Code   RO          688    .text               mc_w.l(init.o)
-    0x00002478   0x00000028   Code   RO          552    i.__0sprintf$6      mc_w.l(printf6.o)
-    0x000024a0   0x0000000e   Code   RO          702    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x000024ae   0x00000002   Code   RO          703    i.__scatterload_null  mc_w.l(handlers.o)
-    0x000024b0   0x0000000e   Code   RO          704    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x000024be   0x00000002   PAD
-    0x000024c0   0x000002f0   Code   RO          557    i._printf_core      mc_w.l(printf6.o)
-    0x000027b0   0x00000024   Code   RO          558    i._printf_post_padding  mc_w.l(printf6.o)
-    0x000027d4   0x0000002e   Code   RO          559    i._printf_pre_padding  mc_w.l(printf6.o)
-    0x00002802   0x0000000a   Code   RO          561    i._sputc            mc_w.l(printf6.o)
-    0x0000280c   0x000005b8   Data   RO            4    .constdata          main.o
-    0x00002dc4   0x000011d0   Data   RO          101    .constdata          ece353_hw2_fonts.o
-    0x00003f94   0x0000005c   Data   RO          285    .conststring        ECE353-Validate.lib(validate_uart.o)
-    0x00003ff0   0x00000020   Data   RO          700    Region$$Table       anon$$obj.o
-
-
-    Execution Region ER_RW (Base: 0x20000000, Size: 0x00000044, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Base: 0x00000000, Size: 0x00005234, Max: 0xffffffff, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x0000003a   Data   RW            5    .data               main.o
-    0x2000003a   0x00000002   PAD
-    0x2000003c   0x00000004   Data   RW          258    .data               system_tm4c123.o
-    0x20000040   0x00000004   Data   RW          391    .data               mc_w.l(rand.o)
+    0x00000000   0x0000026c   Data   RO          279    RESET               startup_tm4c123.o
+    0x0000026c   0x00000000   Code   RO          420  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x0000026c   0x00000004   Code   RO          689    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x00000270   0x00000004   Code   RO          692    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x00000274   0x00000000   Code   RO          694    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x00000274   0x00000000   Code   RO          696    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x00000274   0x00000008   Code   RO          697    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x0000027c   0x00000000   Code   RO          699    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x0000027c   0x00000000   Code   RO          701    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x0000027c   0x00000004   Code   RO          690    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x00000280   0x00000c40   Code   RO            4    .text               main.o
+    0x00000ec0   0x000000b0   Code   RO          102    .text               ece353_hw2_fonts.o
+    0x00000f70   0x00000134   Code   RO          132    .text               adc.o
+    0x000010a4   0x00000294   Code   RO          160    .text               gpio_port.o
+    0x00001338   0x00000280   Code   RO          184    .text               timers.o
+    0x000015b8   0x000000fc   Code   RO          208    .text               launchpad_io.o
+    0x000016b4   0x000004dc   Code   RO          232    .text               lcd.o
+    0x00001b90   0x000000b8   Code   RO          256    .text               ps2.o
+    0x00001c48   0x000000fc   Code   RO          280  * .text               startup_tm4c123.o
+    0x00001d44   0x00000250   Code   RO          287    .text               system_tm4c123.o
+    0x00001f94   0x00000400   Code   RO          317    .text               ECE353-Validate.lib(validate_uart.o)
+    0x00002394   0x000001cc   Code   RO          399    .text               ECE353-Validate.lib(validate_sysctl.o)
+    0x00002560   0x00000024   Code   RO          423    .text               mc_w.l(rand.o)
+    0x00002584   0x0000000e   Code   RO          426    .text               mc_w.l(strlen.o)
+    0x00002592   0x0000002c   Code   RO          706    .text               mc_w.l(uidiv.o)
+    0x000025be   0x00000002   PAD
+    0x000025c0   0x00000024   Code   RO          721    .text               mc_w.l(init.o)
+    0x000025e4   0x00000028   Code   RO          585    i.__0sprintf$6      mc_w.l(printf6.o)
+    0x0000260c   0x0000000e   Code   RO          735    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0000261a   0x00000002   Code   RO          736    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0000261c   0x0000000e   Code   RO          737    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0000262a   0x00000002   PAD
+    0x0000262c   0x000002f0   Code   RO          590    i._printf_core      mc_w.l(printf6.o)
+    0x0000291c   0x00000024   Code   RO          591    i._printf_post_padding  mc_w.l(printf6.o)
+    0x00002940   0x0000002e   Code   RO          592    i._printf_pre_padding  mc_w.l(printf6.o)
+    0x0000296e   0x0000000a   Code   RO          594    i._sputc            mc_w.l(printf6.o)
+    0x00002978   0x0000166e   Data   RO            5    .constdata          main.o
+    0x00003fe6   0x000011d0   Data   RO          103    .constdata          ece353_hw2_fonts.o
+    0x000051b6   0x00000002   PAD
+    0x000051b8   0x0000005c   Data   RO          318    .conststring        ECE353-Validate.lib(validate_uart.o)
+    0x00005214   0x00000020   Data   RO          733    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_ZI (Base: 0x20000044, Size: 0x00001004, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Base: 0x20000000, Size: 0x00000048, Max: 0xffffffff, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000044   0x00000004   PAD
-    0x20000048   0x00001000   Zero   RW          248    STACK               startup_tm4c123.o
+    0x20000000   0x0000003e   Data   RW            6    .data               main.o
+    0x2000003e   0x00000002   PAD
+    0x20000040   0x00000004   Data   RW          288    .data               system_tm4c123.o
+    0x20000044   0x00000004   Data   RW          424    .data               mc_w.l(rand.o)
+
+
+    Execution Region ER_ZI (Base: 0x20000048, Size: 0x00001000, Max: 0xffffffff, ABSOLUTE)
+
+    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000048   0x00001000   Zero   RW          277    STACK               startup_tm4c123.o
 
 
 ==============================================================================
@@ -865,21 +879,21 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       300         12          0          0          0      28334   adc.o
-       176          6       4560          0          0       1614   ece353_hw2_fonts.o
-       660         32          0          0          0       4794   gpio_port.o
-       252         26          0          0          0       2197   launchpad_io.o
-      1244         26          0          0          0       3256   lcd.o
-      2784        220       1464         58          0      32556   main.o
-       184         10          0          0          0       1081   ps2.o
-       252         10        620          0       4096       5420   startup_tm4c123.o
-       592        138          0          4          0       1497   system_tm4c123.o
-       636         16          0          0          0       3041   timers.o
+       308         12          0          0          0      31474   adc.o
+       176          6       4560          0          0       1598   ece353_hw2_fonts.o
+       660         32          0          0          0       5066   gpio_port.o
+       252         26          0          0          0       2225   launchpad_io.o
+      1244         26          0          0          0       3376   lcd.o
+      3136        238       5742         62          0      32865   main.o
+       184         10          0          0          0       1093   ps2.o
+       252         10        620          0       4096       5428   startup_tm4c123.o
+       592        138          0          4          0       1529   system_tm4c123.o
+       640         16          0          0          0       3197   timers.o
 
     ----------------------------------------------------------------------
-      7080        496       6676         64       4096      83790   Object Totals
+      7444        514      10956         68       4096      87851   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         0          0          0          2          0          0   (incl. Padding)
+         0          0          2          2          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -903,8 +917,8 @@ Image component sizes
         44          0          0          0          0         80   uidiv.o
 
     ----------------------------------------------------------------------
-      2552        224         92          4          4      34792   Library Totals
-         4          0          0          0          4          0   (incl. Padding)
+      2552        224         92          4          0      34792   Library Totals
+         4          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -914,7 +928,7 @@ Image component sizes
       1064         36          0          4          0        772   mc_w.l
 
     ----------------------------------------------------------------------
-      2552        224         92          4          4      34792   Library Totals
+      2552        224         92          4          0      34792   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -923,15 +937,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      9632        720       6768         68       4100     117026   Grand Totals
-      9632        720       6768         68       4100     117026   ELF Image Totals
-      9632        720       6768         68          0          0   ROM Totals
+      9996        738      11048         72       4096     121087   Grand Totals
+      9996        738      11048         72       4096     121087   ELF Image Totals
+      9996        738      11048         72          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                16400 (  16.02kB)
+    Total RO  Size (Code + RO Data)                21044 (  20.55kB)
     Total RW  Size (RW Data + ZI Data)              4168 (   4.07kB)
-    Total ROM Size (Code + RO Data + RW Data)      16468 (  16.08kB)
+    Total ROM Size (Code + RO Data + RW Data)      21116 (  20.62kB)
 
 ==============================================================================
 

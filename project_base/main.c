@@ -36,7 +36,7 @@ volatile bool analogConvert; // Global for adc convertion (setting new spaceship
 volatile bool refreshAliens; // Set every 20 Timer0Bs
 int32_t xVal, yVal; // X and Y values of joystick
 uint16_t xPos, yPos; // Current pixel position
-//uint8_t pixels[30][320]; // Array of on pixels
+int roundNum;
 
 
 // Timer0A Handler, used for Blue LED and SW1 debounce
@@ -52,7 +52,7 @@ void TIMER0A_Handler(void) {
 	}
 	
 	// Debounce logic
-	if (button_count == 6) {
+	if (button_count == 6 || SW1_pressed) {
 		SW1_pressed = true;
 	} else {
 		SW1_pressed = false;
@@ -146,6 +146,7 @@ main(void)
 	bool moveHorizontal = true;
 	bool moveRight = true;
 	bool gameOver = false;
+	int numAlive = 0;
 	
 	//for displaying score to player
 	char msg[8];
@@ -201,48 +202,13 @@ main(void)
 	msg[4] = 'E';
 	msg[5] = ':';
 
+
+	roundNum = 1;
+
   // Main game loop
   while(!gameOver) {
 		
-		// Displaying rows of aliens at top of LCD
-		if (refreshAliens) {
-			refreshAliens = false;
-
-			//logic for alien movement right
-			if (moveHorizontal && moveRight) {
-				if (columnCount == 1){
-					moveHorizontal = false;
-				} else {
-					columnCount--;
-				}
-			//logic for alien movement left
-			} else if (moveHorizontal && !moveRight) {
-				if (columnCount == 30){
-					moveHorizontal = false;
-				} else {
-					columnCount++;
-				}
-			//logic for alien movement down
-			}	else {
-				alienStartingYPos -= 10;
-				lcd_draw_image(0, blackBarWidthPixels, alienStartingYPos + 60, blackBarHeightPixels, blackBarBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-				moveHorizontal = true;
-				moveRight = !moveRight;
-			}
-			
-			//draw alive aliens to screen
-			for (i = 0; i < 7; i++) {
-				for (j = 0; j < 3; j++) {
-					if (aliensAlive[i][j] == 1){
-						lcd_draw_image(columnCount + (30 * i), alienWidthPixels, alienStartingYPos + (20 * j), alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
-					} else if (aliensAlive[i][j] == 2){
-						lcd_draw_image(columnCount + (30 * i), alien2WidthPixels, alienStartingYPos + (20 * j), alien2HeightPixels, alien2Bitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
-					} else {
-						lcd_draw_image(columnCount + (30 * i), alienWidthPixels, alienStartingYPos + (20 * j), alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-					}
-				}
-			}
-		} //end if refresh aliens
+		
 		
 		//switch 1 controls player's bullets
 		if (SW1_pressed) {
@@ -293,8 +259,9 @@ main(void)
 				//if the alien's bullets go off the bottom of the screen erase them
 				if (alienBulletYPos[i] < 1) {
 					alienBullets[i] = false;
+					alienBulletYPos[i] = 0;
 					lcd_draw_image(alienBulletXPos[i], alienBulletWidthPixels, alienBulletYPos[i], alienBulletHeightPixels, alienBulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
-					alienBulletYPos[i] = -10;
+					alienBulletYPos[i] = 200;
 				}
 				
 				//aliens randomly shoot bullets if they are in the bottom row, or if the aliens beneath them have all died
@@ -309,9 +276,11 @@ main(void)
 							lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 							lcd_draw_image(xPos, explosionWidthPixels, yPos, explosionHeightPixels, explosionBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
 							gameOver = true;
+						} else if (aliensAlive[x][z] && alienStartingYPos + (20*z) < 1) {
+							gameOver = true;
 						}
 						if (z == 0 && aliensAlive[x][z] && !alienBullets[i]){
-							if (rand() % 10000 == 0) {
+							if (rand() % (10000 - roundNum * 2000) == 0) {
 								alienBullets[i] = true;
 								alienBulletXPos[i] = columnCount + (30*x) + 10;
 								alienBulletYPos[i] = alienStartingYPos - 8;
@@ -319,7 +288,7 @@ main(void)
 						//if in bottom row aliens can shoot
 						} else if (z == 1) {
 							if (aliensAlive[x][z] && !aliensAlive[x][z - 1] && !alienBullets[i]) {
-								if (rand() % 10000 == 0) {
+								if (rand() % (10000 - roundNum * 2000) == 0) {
 									alienBullets[i] = true;
 									alienBulletXPos[i] = columnCount + (30*x) + 10;
 									alienBulletYPos[i] = alienStartingYPos + 12;
@@ -328,7 +297,7 @@ main(void)
 						//else if the alien is in a row other than the bottom one and the aliens beneath it are all dead it can shoot
 						} else if (z == 2) {
 							if (aliensAlive[x][z] && !aliensAlive[x][z - 2] && !aliensAlive[x][z - 1] && !alienBullets[i]) { 
-								if (rand() % 10000 == 0) {
+								if (rand() % (10000 - roundNum * 2000) == 0) {
 									alienBullets[i] = true;
 									alienBulletXPos[i] = columnCount + (30*x) + 10;
 									alienBulletYPos[i] = alienStartingYPos + 32;
@@ -364,11 +333,78 @@ main(void)
 				}
 				//controls bullet travel for aliens
 				if (alienBullets[i]){
-					alienBulletYPos[i] = alienBulletYPos[i] - 2; // Bullet speed
+					alienBulletYPos[i] = alienBulletYPos[i] - 1 - roundNum; // Bullet speed
 					lcd_draw_image(alienBulletXPos[i], alienBulletWidthPixels, alienBulletYPos[i], alienBulletHeightPixels, alienBulletBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
 				}
 			}//end bullet logic block
 		}//end analogConvert block
+		
+		// Displaying rows of aliens at top of LCD
+		if (refreshAliens) {
+			refreshAliens = false;
+
+			//logic for alien movement right
+			if (moveHorizontal && moveRight) {
+				if (columnCount < 1){
+					moveHorizontal = false;
+				} else {
+					columnCount -= roundNum;
+				}
+			//logic for alien movement left
+			} else if (moveHorizontal && !moveRight) {
+				if (columnCount > 29){
+					moveHorizontal = false;
+				} else {
+					columnCount += roundNum;
+				}
+			//logic for alien movement down
+			}	else {
+				alienStartingYPos -= 10 + (2*roundNum);
+				lcd_draw_image(0, blackBarWidthPixels, alienStartingYPos + 60, blackBarHeightPixels, blackBarBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+				moveHorizontal = true;
+				moveRight = !moveRight;
+			}
+			
+			numAlive = 0;
+			
+			//draw alive aliens to screen
+			for (i = 0; i < 7; i++) {
+				for (j = 0; j < 3; j++) {
+					if (aliensAlive[i][j] == 1){
+						lcd_draw_image(columnCount + (30 * i), alienWidthPixels, alienStartingYPos + (20 * j), alienHeightPixels, alienBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+						numAlive++;
+					} else if (aliensAlive[i][j] == 2){
+						lcd_draw_image(columnCount + (30 * i), alien2WidthPixels, alienStartingYPos + (20 * j), alien2HeightPixels, alien2Bitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+						numAlive++;
+					} else {
+						lcd_draw_image(columnCount + (30 * i), alienWidthPixels, alienStartingYPos + (20 * j), alienHeightPixels, alienBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
+					}
+				}
+			}
+			
+			//if all the aliens are dead go on to the next round
+			if (numAlive == 0) {
+				
+				columnCount = 30;
+				alienStartingYPos = 260;
+				roundNum++;
+				
+				//make new aliens
+				for (i = 0; i < 7; i++) {
+					for (j = 0; j < 3; j++) {
+						aliensAlive[i][j] = (rand() % 2) + 1;
+					}
+				}
+				
+			}
+			
+		} //end if refresh aliens
+		
+		//max level is 5
+		if (roundNum == 5) {
+			gameOver = true;
+		}
+		
   }//end while gameOver loop
 	
 	//display score (# aliens killed) to player on game over
@@ -381,6 +417,15 @@ main(void)
 			msg[7] = (score%10)+'0'; //second digit
 		}
 		
-		lcd_print_stringXY(msg,199,10,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+		lcd_clear_screen(LCD_COLOR_BLACK);
+		
+		// Draw game over screen
+		lcd_draw_image(15, gameOverWidthPixels, 200, gameOverHeightPixels, gameOverBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+		
+		lcd_print_stringXY(msg,3,11,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+		
+		if (score == 84) {
+			lcd_draw_image(45, maxScoreWidthPixels, 35, maxScoreHeightPixels, maxScoreBitmap, LCD_COLOR_BLUE2, LCD_COLOR_BLACK);
+		}
 	}
 }
