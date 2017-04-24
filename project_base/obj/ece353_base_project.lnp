@@ -1,4 +1,4 @@
---cpu=Cortex-M4.fp
+--cpu Cortex-M4.fp
 ".\obj\main.o"
 ".\obj\ece353_hw2_fonts.o"
 ".\obj\adc.o"

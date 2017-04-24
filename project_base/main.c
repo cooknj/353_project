@@ -37,12 +37,93 @@ volatile bool refreshAliens; // Set every 20 Timer0Bs
 int32_t xVal, yVal; // X and Y values of joystick
 uint16_t xPos, yPos; // Current pixel position
 int roundNum;
+bool explosion_sound;
+bool shooting_sound;
+bool gameOver;
 
 
 // Timer0A Handler, used for Blue LED and SW1 debounce
 void TIMER0A_Handler(void) {
-	// Counters for debouncing
+
+		static uint16_t speaker_count = 0;
+		static uint16_t count = 0;
+		static uint16_t freq = 0;
+
+	if (!gameOver){
+	if (explosion_sound || shooting_sound) {
+		count = 0;
+		if (!shooting_sound && explosion_sound) {
+			freq = 300;
+	} else if (shooting_sound && !explosion_sound) {
+			freq = 50;
+	} else {
+			freq = 300;
+	}
+	}
+	
+
+
+	if (count < 4000) {
+		if (speaker_count == freq / 2) {
+			lp_io_set_pin(2);
+			speaker_count++;
+		} else if (speaker_count == freq) {
+			lp_io_clear_pin(2);
+			speaker_count = 0;
+			
+			if (freq > 300) {
+				freq -= 10;
+			}	else {
+				freq += 1;
+			}
+		} else {
+			speaker_count++;
+		}
+		count++;
+	} else {
+		lp_io_clear_pin(2);
+		speaker_count = 0;
+
+	}
+	
+	shooting_sound = false;
+	explosion_sound = false;
+	
+} else {
+	count = 0;
+	freq = 50;
+	
+	for (count = 0; count < 75; count++) {
+		if (speaker_count == freq / 2) {
+			lp_io_set_pin(2);
+			speaker_count++;
+		} else if (speaker_count == freq) {
+			lp_io_clear_pin(2);
+			speaker_count = 0;
+			freq += 1;
+		} else {
+			speaker_count++;
+		}
+		
+	} 
+}
+	
+	clearInterrupt(TIMER0_BASE, true);
+	
+	return;
+}
+
+
+
+
+// Timer0B Handler, used for ADC
+void TIMER0B_Handler(void) {
+	static uint8_t alien_count = 0;
 	static uint8_t button_count = 0;
+	ADC0_Type  *myADC;
+	myADC = (ADC0_Type *)PS2_ADC_BASE;	
+	// Counters for debouncing
+
 
 	// Increment the counter for debouncing
 	if (!lp_io_read_pin(SW1_BIT)) {
@@ -57,18 +138,6 @@ void TIMER0A_Handler(void) {
 	} else {
 		SW1_pressed = false;
 	}
-	
-	clearInterrupt(TIMER0_BASE, true);
-	
-	return;
-}
-
-// Timer0B Handler, used for ADC
-void TIMER0B_Handler(void) {
-	static uint8_t alien_count = 0;
-
-	ADC0_Type  *myADC;
-	myADC = (ADC0_Type *)PS2_ADC_BASE;	
 
 	// delay buffer for displaying next row of aliens
 	if (alien_count == 5) {
@@ -123,7 +192,7 @@ void initialize_hardware(void) {
 	adc0_ps2_initialize();
 	
 	// Set timer0A and timer0B
-	gp_timer_config_16(TIMER0_BASE, 10000, 30000, 50, 25);
+	gp_timer_config_16(TIMER0_BASE, 1000, 30000, 1, 25);
 	
 	// Initialize GPIO for the switch and leds
 	lp_io_init_SW1_LED();
@@ -145,7 +214,6 @@ main(void)
 	int score = 0;
 	bool moveHorizontal = true;
 	bool moveRight = true;
-	bool gameOver = false;
 	int numAlive = 0;
 	
 	//for displaying score to player
@@ -204,6 +272,7 @@ main(void)
 
 
 	roundNum = 1;
+	gameOver = false;
 
   // Main game loop
   while(!gameOver) {
@@ -219,6 +288,7 @@ main(void)
 				lcd_draw_image(bulletXPos[bullet], bulletWidthPixels, bulletYPos[bullet], bulletHeightPixels, bulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 			}
 			bullets[bullet] = true;
+			shooting_sound = true;
 			bulletXPos[bullet] = xPos + 12;
 			bulletYPos[bullet] = yPos + 23;
 			
@@ -275,6 +345,7 @@ main(void)
 							alienBullets[i] = false;
 							lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 							lcd_draw_image(xPos, explosionWidthPixels, yPos, explosionHeightPixels, explosionBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+							explosion_sound = true;
 							gameOver = true;
 						} else if (aliensAlive[x][z] && alienStartingYPos + (20*z) < 1) {
 							gameOver = true;
@@ -282,6 +353,7 @@ main(void)
 						if (z == 0 && aliensAlive[x][z] && !alienBullets[i]){
 							if (rand() % (10000 - roundNum * 2000) == 0) {
 								alienBullets[i] = true;
+								shooting_sound = true;
 								alienBulletXPos[i] = columnCount + (30*x) + 10;
 								alienBulletYPos[i] = alienStartingYPos - 8;
 							}
@@ -290,6 +362,7 @@ main(void)
 							if (aliensAlive[x][z] && !aliensAlive[x][z - 1] && !alienBullets[i]) {
 								if (rand() % (10000 - roundNum * 2000) == 0) {
 									alienBullets[i] = true;
+									shooting_sound = true;
 									alienBulletXPos[i] = columnCount + (30*x) + 10;
 									alienBulletYPos[i] = alienStartingYPos + 12;
 								}
@@ -299,6 +372,7 @@ main(void)
 							if (aliensAlive[x][z] && !aliensAlive[x][z - 2] && !aliensAlive[x][z - 1] && !alienBullets[i]) { 
 								if (rand() % (10000 - roundNum * 2000) == 0) {
 									alienBullets[i] = true;
+									shooting_sound = true;
 									alienBulletXPos[i] = columnCount + (30*x) + 10;
 									alienBulletYPos[i] = alienStartingYPos + 32;
 								}
@@ -309,6 +383,7 @@ main(void)
 						if (bullets[i] && aliensAlive[x][z] != 0 && bulletYPos[i] + 6 >= alienStartingYPos + (20*z) && bulletYPos[i] <= alienStartingYPos + (20*z) + 16 && bulletXPos[i] >= columnCount + (30*x) + 8 && bulletXPos[i] <= columnCount + (30*x) + 26) {
 							aliensAlive[x][z] = 0;
 							bullets[i] = false;
+							explosion_sound = true;
 							lcd_draw_image(bulletXPos[i], bulletWidthPixels, bulletYPos[i], bulletHeightPixels, bulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 							lcd_draw_image(columnCount + (30*x), explosionWidthPixels, alienStartingYPos + (20*z), explosionHeightPixels, explosionBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
 							score++; //increment player score
@@ -323,6 +398,7 @@ main(void)
 					alienBullets[i] = false;
 					lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 					lcd_draw_image(xPos, explosionWidthPixels, yPos, explosionHeightPixels, explosionBitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
+					explosion_sound = true;
 					gameOver = true;
 				}
 				
@@ -338,7 +414,7 @@ main(void)
 				}
 			}//end bullet logic block
 		}//end analogConvert block
-		
+				
 		// Displaying rows of aliens at top of LCD
 		if (refreshAliens) {
 			refreshAliens = false;
@@ -409,6 +485,7 @@ main(void)
 	
 	//display score (# aliens killed) to player on game over
 	if(gameOver) {
+		
 		//must separate score digits if over 9 because of ASCII table in ece fonts c file
 		if(score <= 9 )
 			msg[6] = score + '0';

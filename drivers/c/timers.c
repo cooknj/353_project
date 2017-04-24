@@ -276,3 +276,5 @@ void clearInterrupt(uint32_t base_addr, bool A) {
 		gp_timer->ICR |= TIMER_ICR_TBTOCINT;
 	}
 }
+
+
