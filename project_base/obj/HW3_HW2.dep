@@ -1,27 +1,29 @@
 Dependencies for Project 'HW3', Target 'HW2': (DO NOT MODIFY !)
-F (.\main.c)(0x58FA6548)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
-I (main.h)(0x58FA63DB)
+F (.\main.c)(0x58FEB8A6)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
+I (main.h)(0x58FEAE86)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F6CB98)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F6CB98)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F6CB98)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F6CB98)
-I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123.h)(0x530F6376)
+I (..\peripherals\include\ft6x06.h)(0x58F79422)
+I (..\drivers\include\driver_defines.h)(0x58F79422)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F6CB98)
+I (C:\Keil_v5\ARM\ARMCC\include\errno.h)(0x57F6CB96)
 I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123GH6PM.h)(0x551052AC)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B75486)
+I (..\drivers\include\gpio_port.h)(0x58F79422)
+I (..\drivers\include\i2c.h)(0x58F79422)
+I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123.h)(0x530F6376)
 I (ece353_hw2_fonts.h)(0x58FA520B)
 I (..\peripherals\include\lcd.h)(0x58F79422)
-I (..\drivers\include\driver_defines.h)(0x58F79422)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F6CB98)
-I (C:\Keil_v5\ARM\ARMCC\include\errno.h)(0x57F6CB96)
-I (..\drivers\include\gpio_port.h)(0x58F79422)
 I (..\drivers\include\timers.h)(0x58F79422)
 I (..\peripherals\include\ps2.h)(0x58F79422)
 I (..\drivers\include\adc.h)(0x58F79422)
 I (..\peripherals\include\launchpad_io.h)(0x58F79422)
-F (.\main.h)(0x58FA63DB)()
+F (.\main.h)(0x58FEAE86)()
 F (.\ece353_hw2_fonts.c)(0x58FA520B)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\ece353_hw2_fonts.o --omf_browse .\obj\ece353_hw2_fonts.crf --depend .\obj\ece353_hw2_fonts.d)
 I (ece353_hw2_fonts.h)(0x58FA520B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F6CB98)
@@ -62,7 +64,7 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B75486)
-F (..\drivers\c\timers.c)(0x58FA520B)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\timers.o --omf_browse .\obj\timers.crf --depend .\obj\timers.d)
+F (..\drivers\c\timers.c)(0x58FEA3A8)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\timers.o --omf_browse .\obj\timers.crf --depend .\obj\timers.d)
 I (..\drivers\include\timers.h)(0x58F79422)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F6CB98)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F6CB98)
@@ -74,6 +76,18 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B75486)
+F (..\drivers\c\i2c.c)(0x58F79422)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\i2c.o --omf_browse .\obj\i2c.crf --depend .\obj\i2c.d)
+I (..\drivers\include\i2c.h)(0x58F79422)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F6CB98)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F6CB98)
+I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123GH6PM.h)(0x551052AC)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
+I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B75486)
+I (..\drivers\include\driver_defines.h)(0x58F79422)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F6CB98)
+I (C:\Keil_v5\ARM\ARMCC\include\errno.h)(0x57F6CB96)
 F (..\peripherals\c\launchpad_io.c)(0x58FA520B)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\launchpad_io.o --omf_browse .\obj\launchpad_io.crf --depend .\obj\launchpad_io.d)
 I (..\peripherals\include\launchpad_io.h)(0x58F79422)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F6CB98)
@@ -115,6 +129,20 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEB
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
 I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B75486)
 I (..\drivers\include\adc.h)(0x58F79422)
+F (..\peripherals\c\ft6x06.c)(0x58F79422)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\ft6x06.o --omf_browse .\obj\ft6x06.crf --depend .\obj\ft6x06.d)
+I (..\peripherals\include\ft6x06.h)(0x58F79422)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F6CB98)
+I (..\drivers\include\driver_defines.h)(0x58F79422)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F6CB98)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F6CB98)
+I (C:\Keil_v5\ARM\ARMCC\include\errno.h)(0x57F6CB96)
+I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123GH6PM.h)(0x551052AC)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
+I (C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B75486)
+I (..\drivers\include\gpio_port.h)(0x58F79422)
+I (..\drivers\include\i2c.h)(0x58F79422)
 F (..\lib\ECE353-Validate.lib)(0x58F79422)()
 F (RTE\Device\TM4C123GH6PM\startup_TM4C123.s)(0x58F79422)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1" --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "TM4C123GH6PM SETA 1"--list .\lst\startup_tm4c123.lst --xref -o .\obj\startup_tm4c123.o --depend .\obj\startup_tm4c123.d)
 F (RTE\Device\TM4C123GH6PM\system_TM4C123.c)(0x58F79422)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil_v5\ARM\Pack\ARM\CMSIS\3.20.4\CMSIS\Include -I ..\include -I ..\drivers\include -I ..\peripherals\include --debug-IF:\Documents\GitHub\353_project\project_base\RTE\_HW2-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="522" -D_RTE_ -DTM4C123GH6PM-o .\obj\system_tm4c123.o --omf_browse .\obj\system_tm4c123.crf --depend .\obj\system_tm4c123.d)

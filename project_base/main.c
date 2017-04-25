@@ -40,73 +40,75 @@ int roundNum;
 bool explosion_sound;
 bool shooting_sound;
 bool gameOver;
-
+uint16_t gameOverSound;
+int gameOverFreq;
+uint16_t speaker_count;
 
 // Timer0A Handler, used for Blue LED and SW1 debounce
 void TIMER0A_Handler(void) {
 
-		static uint16_t speaker_count = 0;
+		
 		static uint16_t count = 0;
 		static uint16_t freq = 0;
+	
 
 	if (!gameOver){
-	if (explosion_sound || shooting_sound) {
-		count = 0;
-		if (!shooting_sound && explosion_sound) {
-			freq = 300;
-	} else if (shooting_sound && !explosion_sound) {
-			freq = 50;
-	} else {
-			freq = 300;
-	}
-	}
+		if (explosion_sound || shooting_sound) {
+			count = 0;
+			speaker_count = 0;
+			if (!shooting_sound && explosion_sound) {
+				freq = 300;
+			} else if (shooting_sound && !explosion_sound) {
+				freq = 50;
+			} else {
+				freq = 50;
+			}
+		}
 	
 
 
-	if (count < 4000) {
-		if (speaker_count == freq / 2) {
-			lp_io_set_pin(2);
-			speaker_count++;
-		} else if (speaker_count == freq) {
+		if (count < 4000) {
+			if (speaker_count == freq / 2) {
+				lp_io_set_pin(2);
+				speaker_count++;
+			} else if (speaker_count == freq) {
+				lp_io_clear_pin(2);
+				speaker_count = 0;
+				
+				if (freq > 300) {
+					freq -= 10;
+				}	else {
+					freq += 1;
+				}
+			} else {
+				speaker_count++;
+			}
+			count++;
+		} else {
 			lp_io_clear_pin(2);
 			speaker_count = 0;
-			
-			if (freq > 300) {
-				freq -= 10;
-			}	else {
-				freq += 1;
-			}
-		} else {
-			speaker_count++;
-		}
-		count++;
-	} else {
-		lp_io_clear_pin(2);
-		speaker_count = 0;
 
-	}
+		}
+		
+		shooting_sound = false;
+		explosion_sound = false;
 	
-	shooting_sound = false;
-	explosion_sound = false;
-	
-} else {
-	count = 0;
-	freq = 50;
-	
-	for (count = 0; count < 75; count++) {
-		if (speaker_count == freq / 2) {
+	} else {
+		gameOverSound++;
+
+		
+		if (speaker_count == (gameOverFreq / 2)) {
 			lp_io_set_pin(2);
 			speaker_count++;
-		} else if (speaker_count == freq) {
+		} else if (speaker_count == gameOverFreq) {
 			lp_io_clear_pin(2);
 			speaker_count = 0;
 			freq += 1;
 		} else {
 			speaker_count++;
 		}
-		
-	} 
-}
+
+	}
 	
 	clearInterrupt(TIMER0_BASE, true);
 	
@@ -200,6 +202,8 @@ void initialize_hardware(void) {
 	// Config gpio and LCD
 	lcd_config_gpio();
 	lcd_config_screen();
+	ft6x06_init();
+	
 }
 
 //*****************************************************************************
@@ -230,6 +234,7 @@ main(void)
 	bool bullets[16];
 	int bullet = 0; 
 	int i, j, x, z;
+	int pressedXval, pressedYval;
 	
 	//initialize bullet arrays
 	for (i = 0; i < 16; i++) {
@@ -257,6 +262,20 @@ main(void)
   put_string("\n\r");  
   put_string("************************************\n\r");
 
+	
+	// Main menu
+	
+	lcd_clear_screen(LCD_COLOR_BLACK);
+	lcd_draw_image(1, spaceinvaderslogoWidthPixels, 200, spaceinvaderslogoHeightPixels, spaceinvaderslogoBitmap, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+	lcd_draw_image(68, startWidthPixels, 100, startHeightPixels, startBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+	
+	pressedXval = 0;
+	pressedYval = 0;
+	while (ft6x06_read_td_status() == 0 || pressedXval > 172 || pressedXval < 68 || pressedYval > 138 || pressedYval < 100) {
+		pressedXval = ft6x06_read_x();
+		pressedYval = ft6x06_read_y();
+	}
+
 	// Clear screen and set spaceship starting position
 	lcd_clear_screen(LCD_COLOR_BLACK);
 	xPos = 120;
@@ -270,9 +289,12 @@ main(void)
 	msg[4] = 'E';
 	msg[5] = ':';
 
-
+	// Initialize variables needed for the game to operate
+	gameOverFreq = 50;
+	gameOverSound = 0;
 	roundNum = 1;
 	gameOver = false;
+	
 
   // Main game loop
   while(!gameOver) {
@@ -485,7 +507,7 @@ main(void)
 	
 	//display score (# aliens killed) to player on game over
 	if(gameOver) {
-		
+		speaker_count = 0;
 		//must separate score digits if over 9 because of ASCII table in ece fonts c file
 		if(score <= 9 )
 			msg[6] = score + '0';
@@ -504,5 +526,13 @@ main(void)
 		if (score == 84) {
 			lcd_draw_image(45, maxScoreWidthPixels, 35, maxScoreHeightPixels, maxScoreBitmap, LCD_COLOR_BLUE2, LCD_COLOR_BLACK);
 		}
+		
+		// Play gameOver sound
+		while (gameOverSound < 30000) {
+			if (gameOverSound == 15000) {
+				gameOverFreq = 70;
+			}
+		}
+		
 	}
 }
