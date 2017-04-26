@@ -27,8 +27,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ft6x06.h"
+#include "eeprom.h"
 #include "TM4C123.h"
 #include "ece353_hw2_fonts.h"
+#include "serial_debug.h"
+
 
 extern void serialDebugInit(void);
 

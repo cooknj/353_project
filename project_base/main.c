@@ -25,6 +25,8 @@
 #include "ps2.h"
 #include "launchpad_io.h"
 #include "lcd.h"
+
+
 //#define SetBit(j, k, x) (pixels[(j/8)][k] |= (x << (j%8))) // Use byte array as a bit array to save space
 
 char group[] = "Group33";
@@ -44,14 +46,14 @@ uint16_t gameOverSound;
 int gameOverFreq;
 uint16_t speaker_count;
 
-// Timer0A Handler, used for Blue LED and SW1 debounce
+// Timer0A Handler, used for speaker sounds
 void TIMER0A_Handler(void) {
 
 		
 		static uint16_t count = 0;
 		static uint16_t freq = 0;
 	
-
+/*
 	if (!gameOver){
 		if (explosion_sound || shooting_sound) {
 			count = 0;
@@ -109,7 +111,7 @@ void TIMER0A_Handler(void) {
 		}
 
 	}
-	
+	*/
 	clearInterrupt(TIMER0_BASE, true);
 	
 	return;
@@ -186,9 +188,31 @@ void readPS2() {
 }
 
 //*****************************************************************************
+// 
+//*****************************************************************************
+void DisableInterrupts(void)
+{
+  __asm {
+         CPSID  I
+  }
+}
+
+//*****************************************************************************
+// 
+//*****************************************************************************
+void EnableInterrupts(void)
+{
+  __asm {
+    CPSIE  I
+  }
+}
+
+//*****************************************************************************
 //*****************************************************************************
 void initialize_hardware(void) {
-  initialize_serial_debug();
+  
+	DisableInterrupts();
+	init_serial_debug(true, true);
 	
 	// Initialize adc for the joystick
 	adc0_ps2_initialize();
@@ -203,6 +227,8 @@ void initialize_hardware(void) {
 	lcd_config_gpio();
 	lcd_config_screen();
 	ft6x06_init();
+	eeprom_init();
+	EnableInterrupts();
 	
 }
 
@@ -212,7 +238,6 @@ int
 main(void)
 {
 	int columnCount = 30;
-	int alienStartingXPos = 10;
 	int alienStartingYPos = 260;
 	int aliensAlive[7][3];
 	int score = 0;
@@ -222,19 +247,19 @@ main(void)
 	
 	//for displaying score to player
 	char msg[8];
+	char scoreMsg[11];
 	
 	// Arrays for the 16 bullets and their positions
 	int alienBulletXPos[16];
 	int alienBulletYPos[16];
 	bool alienBullets[16];
-	int alienBullet = 0; 
-	
 	int bulletXPos[16];
 	int bulletYPos[16];
 	bool bullets[16];
 	int bullet = 0; 
 	int i, j, x, z;
 	int pressedXval, pressedYval;
+	uint8_t bestScore;
 	
 	//initialize bullet arrays
 	for (i = 0; i < 16; i++) {
@@ -261,11 +286,30 @@ main(void)
   put_string(individual_2);
   put_string("\n\r");  
   put_string("************************************\n\r");
+	
+	eeprom_byte_read(I2C1_BASE, 500, &bestScore);
+	
+	scoreMsg[0] = 'H';
+	scoreMsg[1] = 'I';
+	scoreMsg[2] = '-';
+	scoreMsg[3] = 'S';
+	scoreMsg[4] = 'C';
+	scoreMsg[5] = 'O';
+	scoreMsg[6] = 'R';
+	scoreMsg[7] = 'E';
+	scoreMsg[8] = ':';
 
+	if(bestScore <= 9 ) {
+		scoreMsg[9] = bestScore + '0';
+	} else {
+		scoreMsg[9] = (bestScore/10)+'0'; //first digit
+		scoreMsg[10] = (bestScore%10)+'0'; //second digit
+	}
 	
 	// Main menu
-	
 	lcd_clear_screen(LCD_COLOR_BLACK);
+	lcd_print_stringXY(scoreMsg,2,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+
 	lcd_draw_image(1, spaceinvaderslogoWidthPixels, 200, spaceinvaderslogoHeightPixels, spaceinvaderslogoBitmap, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
 	lcd_draw_image(68, startWidthPixels, 100, startHeightPixels, startBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 	
@@ -274,6 +318,14 @@ main(void)
 	while (ft6x06_read_td_status() == 0 || pressedXval > 172 || pressedXval < 68 || pressedYval > 138 || pressedYval < 100) {
 		pressedXval = ft6x06_read_x();
 		pressedYval = ft6x06_read_y();
+		
+		if (pressedXval > 10 && pressedXval < 220 && pressedYval > 50 && pressedYval < 70) {
+			eeprom_byte_write(I2C1_BASE, 500, 0);
+			scoreMsg[9] = 0 + '0';
+			scoreMsg[10] = ' ';
+			lcd_print_stringXY(scoreMsg,2,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+		}
+		
 	}
 
 	// Clear screen and set spaceship starting position
@@ -402,7 +454,7 @@ main(void)
 						}
 						
 						//if a player's bullet hits an alien display the explosion image and erase that alien from the game
-						if (bullets[i] && aliensAlive[x][z] != 0 && bulletYPos[i] + 6 >= alienStartingYPos + (20*z) && bulletYPos[i] <= alienStartingYPos + (20*z) + 16 && bulletXPos[i] >= columnCount + (30*x) + 8 && bulletXPos[i] <= columnCount + (30*x) + 26) {
+						if (bullets[i] && aliensAlive[x][z] != 0 && bulletYPos[i] + 6 >= alienStartingYPos + (20*z) && bulletYPos[i] <= alienStartingYPos + (20*z) + 16 && bulletXPos[i] >= columnCount + (30*x) + 5 && bulletXPos[i] <= columnCount + (30*x) + 24) {
 							aliensAlive[x][z] = 0;
 							bullets[i] = false;
 							explosion_sound = true;
@@ -415,7 +467,7 @@ main(void)
 				}
 				
 				//if an alien's bullet hits the player then it is game over
-				if (alienBulletXPos[i] > xPos + 2 && alienBulletXPos[i] < xPos + 25 && alienBulletYPos[i] > yPos + 2 && alienBulletYPos[i] < yPos + 26) {
+				if (alienBulletXPos[i] > xPos - 2 && alienBulletXPos[i] < xPos + 25 && alienBulletYPos[i] > yPos + 2 && alienBulletYPos[i] < yPos + 26) {
 					lcd_draw_image(alienBulletXPos[i], alienBulletWidthPixels, alienBulletYPos[i], alienBulletHeightPixels, alienBulletBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
 					alienBullets[i] = false;
 					lcd_draw_image(xPos, spaceshipWidthPixels, yPos, spaceshipHeightPixels, spaceshipBitmap, LCD_COLOR_BLACK, LCD_COLOR_BLACK);
@@ -525,6 +577,12 @@ main(void)
 		
 		if (score == 84) {
 			lcd_draw_image(45, maxScoreWidthPixels, 35, maxScoreHeightPixels, maxScoreBitmap, LCD_COLOR_BLUE2, LCD_COLOR_BLACK);
+		}
+		
+		eeprom_byte_read(I2C1_BASE, 500, &bestScore);
+		
+		if (bestScore < score) {
+			eeprom_byte_write(I2C1_BASE, 500, score);
 		}
 		
 		// Play gameOver sound
