@@ -2,102 +2,92 @@
 <body>
 <pre>
 <h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.22.0.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Jackson Melchert, University of Wisconsin Madison, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.22
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 4 (build 422)
+Assembler:       Armasm.exe V5.06 update 4 (build 422)
+Linker/Locator:  ArmLink.exe V5.06 update 4 (build 422)
+Library Manager: ArmAr.exe V5.06 update 4 (build 422)
+Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
+CPU DLL:         SARMCM3.DLL V5.22
+Dialog DLL:      DCM.DLL V1.13.9.0
+Target DLL:      lmidk-agdi.dll V???
+Dialog DLL:      TCM.DLL V1.21.0.0
+ 
 <h2>Project:</h2>
-I:\GitHub\353_project\project_base\HW3.uvprojx
-Project File Date:  04/25/2017
+F:\Documents\GitHub\353_project\project_base\HW3.uvprojx
+Project File Date:  04/24/2017
 
 <h2>Output:</h2>
+*** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'HW2'
-compiling main.c...
-main.c(53): warning:  #177-D: variable "count" was declared but never referenced
-                static uint16_t count = 0;
-main.c(54): warning:  #177-D: variable "freq" was declared but never referenced
-                static uint16_t freq = 0;
-main.c(279): warning:  #223-D: function "put_string" declared implicitly
-    put_string("\n\r");
-main.c: 3 warnings, 0 errors
-compiling ece353_hw2_fonts.c...
 compiling adc.c...
+compiling ece353_hw2_fonts.c...
+compiling timers.c...
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
-..\drivers\c\gpio_port.c(454): warning:  #177-D: variable "gpioPort" was declared but never referenced
+..\drivers\c\gpio_port.c(454): warning:  #177-D: variable "gpioPort"  was declared but never referenced
     GPIOA_Type  *gpioPort;
 ..\drivers\c\gpio_port.c: 2 warnings, 0 errors
-compiling timers.c...
+compiling pc_buffer.c...
+compiling main.c...
 compiling i2c.c...
 compiling uart.c...
 ..\drivers\c\uart.c(184): warning:  #188-D: enumerated type mixed with another type
          return 0;
 ..\drivers\c\uart.c: 1 warning, 0 errors
-compiling pc_buffer.c...
 compiling launchpad_io.c...
-compiling lcd.c...
 compiling ps2.c...
+compiling lcd.c...
+assembling startup_TM4C123.s...
 compiling ft6x06.c...
 compiling eeprom.c...
 compiling serial_debug.c...
-..\peripherals\c\serial_debug.c(182): warning:  #177-D: variable "uart_base" was declared but never referenced
+..\peripherals\c\serial_debug.c(182): warning:  #177-D: variable "uart_base"  was declared but never referenced
      uint32_t uart_base;
-..\peripherals\c\serial_debug.c(183): warning:  #177-D: variable "tx_buffer" was declared but never referenced
+..\peripherals\c\serial_debug.c(183): warning:  #177-D: variable "tx_buffer"  was declared but never referenced
      PC_Buffer *tx_buffer;
 ..\peripherals\c\serial_debug.c: 2 warnings, 0 errors
-assembling startup_TM4C123.s...
 compiling system_TM4C123.c...
 linking...
-Program Size: Code=13364 RO-data=14168 RW-data=104 ZI-data=4128  
-".\obj\ece353_base_project.axf" - 0 Error(s), 8 Warning(s).
+Program Size: Code=11168 RO-data=14076 RW-data=64 ZI-data=4128  
+".\obj\ece353_base_project.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.4.1.1.pack
-                ARM::CMSIS:CORE:3.30.0
+                http://www.keil.com/pack/ARM.CMSIS.5.0.0.pack
+                ARM::CMSIS:CORE:5.0.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 3.30.0
+   * Component: CORE Version: 5.0.0
 
 Package Vendor: Keil
-                http://www.keil.com/pack/Keil.TM4C_DFP.1.0.0.pack
-                Keil::Device:Startup:1.0.0
+                http://www.keil.com/pack/Keil.TM4C_DFP.1.1.0.pack
+                Keil::Device:Startup:1.0.1
                 Texas Instruments Tiva C Series Device Support and Examples
-   * Component: Startup Version: 1.0.0
+   * Component: Startup Version: 1.0.1
 
 <h2>Collection of Component include folders:</h2>
-  I:\GitHub\353_project\project_base\RTE
-  C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
-  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
+  F:\Documents\GitHub\353_project\project_base\RTE\_HW2
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:3.30.0
-      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+   * Component: ARM::CMSIS:CORE:5.0.0
 
-   * Component: Keil::Device:Startup:1.0.0
+   * Component: Keil::Device:Startup:1.0.1
+      Include file:  Device\Include\TM4C123\TM4C123.h
       Source file:   Device\Source\ARM\startup_TM4C123.s
       Source file:   Device\Source\system_TM4C123.c
-      Include file:  Device\Include\TM4C123\TM4C123.h
-l
-                http://www.keil.com/pack/Keil.TM4C_DFP.1.0.0.pack
-                Keil::Device:Startup:1.0.0
-                Texas Instruments Tiva C Series Device Support and Examples
-   * Component: Startup Version: 1.0.0
-
-<h2>Collection of Component include folders:</h2>
-  I:\GitHub\353_project\project_base\RTE
-  C:\AppV\mdk_510\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
-  C:\AppV\mdk_510\ARM\PACK\Keil\TM4C_DFP\1.0.0\Device\Include\TM4C123
-
-<h2>Collection of Component Files used:</h2>
-
-   * Component: ARM::CMSIS:CORE:3.30.0
-      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
-
-   * Component: Keil::Device:Startup:1.0.0
-      Source file:   Device\Source\ARM\startup_TM4C123.s
-      Source file:   Device\Source\system_TM4C123.c
-      Include file:  Device\Include\TM4C123\TM4C123.h
-Target not created
-rce\ARM\startup_TM4C123.s
-      Source file:   Device\Source\system_TM4C123.c
-      Include file:  Device\Include\TM4C123\TM4C123.h
-Target not created
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>

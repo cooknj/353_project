@@ -1,12 +1,12 @@
---cpu Cortex-M4.fp
+--cpu=Cortex-M4.fp
 ".\obj\main.o"
 ".\obj\ece353_hw2_fonts.o"
 ".\obj\adc.o"
 ".\obj\gpio_port.o"
 ".\obj\timers.o"
 ".\obj\i2c.o"
-".\obj\uart.o"
 ".\obj\pc_buffer.o"
+".\obj\uart.o"
 ".\obj\launchpad_io.o"
 ".\obj\lcd.o"
 ".\obj\ps2.o"

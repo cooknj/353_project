@@ -27,33 +27,27 @@
 #include "lcd.h"
 
 
-//#define SetBit(j, k, x) (pixels[(j/8)][k] |= (x << (j%8))) // Use byte array as a bit array to save space
-
-char group[] = "Group33";
-char individual_1[] = "Jackson Melchert";
-char individual_2[] = "Nicholas Cook";
-
 volatile bool SW1_pressed; // Global for SW1
 volatile bool analogConvert; // Global for adc convertion (setting new spaceship location)
 volatile bool refreshAliens; // Set every 20 Timer0Bs
 int32_t xVal, yVal; // X and Y values of joystick
 uint16_t xPos, yPos; // Current pixel position
-int roundNum;
-bool explosion_sound;
-bool shooting_sound;
-bool gameOver;
-uint16_t gameOverSound;
-int gameOverFreq;
-uint16_t speaker_count;
+int roundNum; // Counter for the round currently on
+bool explosion_sound; // Boolean for if an explosion is happening
+bool shooting_sound; // Boolean for if a shot has occured
+bool gameOver;	// True if the game is over
+uint16_t gameOverSound; // Int for keeping track of how long the game over sound is playing
+int gameOverFreq; // Frequency for playing the game over sound
+uint16_t speaker_count; // Counter for the speaker 
 
 // Timer0A Handler, used for speaker sounds
 void TIMER0A_Handler(void) {
 
-		
+		// Counter and frequency for using the piezo buzzer 
 		static uint16_t count = 0;
 		static uint16_t freq = 0;
 	
-/*
+	// Set frequency of the sound based on which sound is supposed to be playing
 	if (!gameOver){
 		if (explosion_sound || shooting_sound) {
 			count = 0;
@@ -68,8 +62,10 @@ void TIMER0A_Handler(void) {
 		}
 	
 
-
+		// Counter for the duty cycle of the sound effect being played
 		if (count < 4000) {
+			
+			// Duty cycle calculation
 			if (speaker_count == freq / 2) {
 				lp_io_set_pin(2);
 				speaker_count++;
@@ -77,6 +73,7 @@ void TIMER0A_Handler(void) {
 				lp_io_clear_pin(2);
 				speaker_count = 0;
 				
+				// Change up the frequency for better sound effects
 				if (freq > 300) {
 					freq -= 10;
 				}	else {
@@ -89,15 +86,16 @@ void TIMER0A_Handler(void) {
 		} else {
 			lp_io_clear_pin(2);
 			speaker_count = 0;
-
 		}
 		
 		shooting_sound = false;
 		explosion_sound = false;
 	
 	} else {
+		
+		
+		// Play the game over sound
 		gameOverSound++;
-
 		
 		if (speaker_count == (gameOverFreq / 2)) {
 			lp_io_set_pin(2);
@@ -111,7 +109,7 @@ void TIMER0A_Handler(void) {
 		}
 
 	}
-	*/
+	
 	clearInterrupt(TIMER0_BASE, true);
 	
 	return;
@@ -120,14 +118,15 @@ void TIMER0A_Handler(void) {
 
 
 
-// Timer0B Handler, used for ADC
+// Timer0B Handler, used for ADC and debouncing 
 void TIMER0B_Handler(void) {
+	
+	// Counters for using the button debouncing and refreshing the aliens logic
 	static uint8_t alien_count = 0;
 	static uint8_t button_count = 0;
+	
 	ADC0_Type  *myADC;
 	myADC = (ADC0_Type *)PS2_ADC_BASE;	
-	// Counters for debouncing
-
 
 	// Increment the counter for debouncing
 	if (!lp_io_read_pin(SW1_BIT)) {
@@ -188,7 +187,7 @@ void readPS2() {
 }
 
 //*****************************************************************************
-// 
+//  Disables all interrupts for configuration
 //*****************************************************************************
 void DisableInterrupts(void)
 {
@@ -198,7 +197,7 @@ void DisableInterrupts(void)
 }
 
 //*****************************************************************************
-// 
+// 	Enables all interrupts after configuration
 //*****************************************************************************
 void EnableInterrupts(void)
 {
@@ -208,10 +207,12 @@ void EnableInterrupts(void)
 }
 
 //*****************************************************************************
+// Initializes all the hardware needed for the game
 //*****************************************************************************
 void initialize_hardware(void) {
   
 	DisableInterrupts();
+	
 	init_serial_debug(true, true);
 	
 	// Initialize adc for the joystick
@@ -226,23 +227,31 @@ void initialize_hardware(void) {
 	// Config gpio and LCD
 	lcd_config_gpio();
 	lcd_config_screen();
+	
+	// Config the touchscreen and EEPROM
 	ft6x06_init();
 	eeprom_init();
+	
 	EnableInterrupts();
 	
 }
 
 //*****************************************************************************
+// Main game function
 //*****************************************************************************
-int 
-main(void)
+int main(void)
 {
-	int columnCount = 30;
-	int alienStartingYPos = 260;
-	int aliensAlive[7][3];
+	
+	int columnCount = 30; // Aliens position in the X direction
+	int alienStartingYPos = 260;  // Aliens position in the Y direction
+	int aliensAlive[7][3]; // Keeps track of the aliens that are alive
 	int score = 0;
+	
+	// Booleans for the alien movement
 	bool moveHorizontal = true;
 	bool moveRight = true;
+	
+	// Number of aliens alive
 	int numAlive = 0;
 	
 	//for displaying score to player
@@ -257,9 +266,12 @@ main(void)
 	int bulletYPos[16];
 	bool bullets[16];
 	int bullet = 0; 
-	int i, j, x, z;
-	int pressedXval, pressedYval;
-	uint8_t bestScore;
+	
+	int i, j, x, z; // Counter variables for for loops
+	
+	int pressedXval, pressedYval; // Touch screen values
+	
+	uint8_t bestScore; // EEPROM value
 	
 	//initialize bullet arrays
 	for (i = 0; i < 16; i++) {
@@ -276,19 +288,10 @@ main(void)
 	
   initialize_hardware();
 	
-  put_string("\n\r");
-  put_string("************************************\n\r");
-  put_string("ECE353 - Fall 2016 HW3\n\r  ");
-  put_string(group);
-  put_string("\n\r     Name:");
-  put_string(individual_1);
-  put_string("\n\r     Name:");
-  put_string(individual_2);
-  put_string("\n\r");  
-  put_string("************************************\n\r");
-	
+	// Read the best score from the eeprom
 	eeprom_byte_read(I2C1_BASE, 500, &bestScore);
 	
+	// Initialize the hi-score message
 	scoreMsg[0] = 'H';
 	scoreMsg[1] = 'I';
 	scoreMsg[2] = '-';
@@ -308,24 +311,29 @@ main(void)
 	
 	// Main menu
 	lcd_clear_screen(LCD_COLOR_BLACK);
+	
+	// Show hi-score
 	lcd_print_stringXY(scoreMsg,2,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
 
+	// Print logo and start button
 	lcd_draw_image(1, spaceinvaderslogoWidthPixels, 200, spaceinvaderslogoHeightPixels, spaceinvaderslogoBitmap, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
 	lcd_draw_image(68, startWidthPixels, 100, startHeightPixels, startBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 	
 	pressedXval = 0;
 	pressedYval = 0;
+	
+	// Read the touchscreen and wait for the button to be pressed
 	while (ft6x06_read_td_status() == 0 || pressedXval > 172 || pressedXval < 68 || pressedYval > 138 || pressedYval < 100) {
 		pressedXval = ft6x06_read_x();
 		pressedYval = ft6x06_read_y();
 		
+		// If the player touches the high score, reset it to 0
 		if (pressedXval > 10 && pressedXval < 220 && pressedYval > 50 && pressedYval < 70) {
 			eeprom_byte_write(I2C1_BASE, 500, 0);
 			scoreMsg[9] = 0 + '0';
 			scoreMsg[10] = ' ';
 			lcd_print_stringXY(scoreMsg,2,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
 		}
-		
 	}
 
 	// Clear screen and set spaceship starting position
@@ -363,6 +371,8 @@ main(void)
 			}
 			bullets[bullet] = true;
 			shooting_sound = true;
+			
+			// Shoot the bullet from the gun of the spaceship
 			bulletXPos[bullet] = xPos + 12;
 			bulletYPos[bullet] = yPos + 23;
 			
@@ -422,8 +432,11 @@ main(void)
 							explosion_sound = true;
 							gameOver = true;
 						} else if (aliensAlive[x][z] && alienStartingYPos + (20*z) < 1) {
+							// Or alien goes off the bottom of the screen
 							gameOver = true;
 						}
+						
+						// Randomly shoot bullets from the aliens
 						if (z == 0 && aliensAlive[x][z] && !alienBullets[i]){
 							if (rand() % (10000 - roundNum * 2000) == 0) {
 								alienBullets[i] = true;
@@ -560,6 +573,7 @@ main(void)
 	//display score (# aliens killed) to player on game over
 	if(gameOver) {
 		speaker_count = 0;
+		
 		//must separate score digits if over 9 because of ASCII table in ece fonts c file
 		if(score <= 9 )
 			msg[6] = score + '0';
@@ -575,12 +589,14 @@ main(void)
 		
 		lcd_print_stringXY(msg,3,11,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
 		
+		// Display max-score message if they get the max score of 84
 		if (score == 84) {
 			lcd_draw_image(45, maxScoreWidthPixels, 35, maxScoreHeightPixels, maxScoreBitmap, LCD_COLOR_BLUE2, LCD_COLOR_BLACK);
 		}
 		
 		eeprom_byte_read(I2C1_BASE, 500, &bestScore);
 		
+		// Save the highest score to the eeprom
 		if (bestScore < score) {
 			eeprom_byte_write(I2C1_BASE, 500, score);
 		}
