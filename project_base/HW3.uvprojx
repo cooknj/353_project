@@ -419,6 +419,21 @@
               <FileType>1</FileType>
               <FilePath>..\drivers\c\i2c.c</FilePath>
             </File>
+            <File>
+              <FileName>pc_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\drivers\c\pc_buffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\drivers\c\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>driver_defines.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\drivers\include\driver_defines.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -443,6 +458,16 @@
               <FileName>ft6x06.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\peripherals\c\ft6x06.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\peripherals\c\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\peripherals\c\serial_debug.c</FilePath>
             </File>
           </Files>
         </Group>
