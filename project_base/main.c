@@ -256,7 +256,10 @@ int main(void)
 	
 	//for displaying score to player
 	char msg[8];
-	char scoreMsg[11];
+	char scoreMsg[10];
+	char scoreMsg1[2];
+	char scoreMsg2[2];
+	char scoreMsg3[2];
 	
 	// Arrays for the 16 bullets and their positions
 	int alienBulletXPos[16];
@@ -271,7 +274,9 @@ int main(void)
 	
 	int pressedXval, pressedYval; // Touch screen values
 	
-	uint8_t bestScore; // EEPROM value
+	uint8_t bestScore1; // EEPROM value
+	uint8_t bestScore2;
+	uint8_t bestScore3;
 	
 	//initialize bullet arrays
 	for (i = 0; i < 16; i++) {
@@ -289,7 +294,9 @@ int main(void)
   initialize_hardware();
 	
 	// Read the best score from the eeprom
-	eeprom_byte_read(I2C1_BASE, 500, &bestScore);
+	eeprom_byte_read(I2C1_BASE, 500, &bestScore1);
+	eeprom_byte_read(I2C1_BASE, 508, &bestScore2);
+	eeprom_byte_read(I2C1_BASE, 516, &bestScore3);
 	
 	// Initialize the hi-score message
 	scoreMsg[0] = 'H';
@@ -300,24 +307,41 @@ int main(void)
 	scoreMsg[5] = 'O';
 	scoreMsg[6] = 'R';
 	scoreMsg[7] = 'E';
-	scoreMsg[8] = ':';
+	scoreMsg[8] = 'S';
+	scoreMsg[9] = ':';
 
-	if(bestScore <= 9 ) {
-		scoreMsg[9] = bestScore + '0';
+	
+	if(bestScore1 <= 9 ) {
+		scoreMsg1[0] = bestScore1 + '0';
 	} else {
-		scoreMsg[9] = (bestScore/10)+'0'; //first digit
-		scoreMsg[10] = (bestScore%10)+'0'; //second digit
+		scoreMsg1[0] = (bestScore1/10)+'0'; //first digit
+		scoreMsg1[1] = (bestScore1%10)+'0'; //second digit
+	}
+	if(bestScore2 <= 9 ) {
+		scoreMsg2[0] = bestScore2 + '0';
+	} else {
+		scoreMsg2[0] = (bestScore2/10)+'0'; //first digit
+		scoreMsg2[1] = (bestScore2%10)+'0'; //second digit
+	}
+	if(bestScore3 <= 9 ) {
+		scoreMsg3[0] = bestScore3 + '0';
+	} else {
+		scoreMsg3[0] = (bestScore3/10)+'0'; //first digit
+		scoreMsg3[1] = (bestScore3%10)+'0'; //second digit
 	}
 	
 	// Main menu
 	lcd_clear_screen(LCD_COLOR_BLACK);
 	
-	// Show hi-score
-	lcd_print_stringXY(scoreMsg,2,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+	// Show hi-scores
+	lcd_print_stringXY(scoreMsg,2,15,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+	lcd_print_stringXY(scoreMsg1,6,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+	lcd_print_stringXY(scoreMsg2,6,18,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+	lcd_print_stringXY(scoreMsg3,6,19,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
 
 	// Print logo and start button
 	lcd_draw_image(1, spaceinvaderslogoWidthPixels, 200, spaceinvaderslogoHeightPixels, spaceinvaderslogoBitmap, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
-	lcd_draw_image(68, startWidthPixels, 100, startHeightPixels, startBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+	lcd_draw_image(68, startWidthPixels, 120, startHeightPixels, startBitmap, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
 	
 	pressedXval = 0;
 	pressedYval = 0;
@@ -328,11 +352,21 @@ int main(void)
 		pressedYval = ft6x06_read_y();
 		
 		// If the player touches the high score, reset it to 0
-		if (pressedXval > 10 && pressedXval < 220 && pressedYval > 50 && pressedYval < 70) {
+		if (pressedXval > 10 && pressedXval < 220 && pressedYval > 70 && pressedYval < 90) {
 			eeprom_byte_write(I2C1_BASE, 500, 0);
-			scoreMsg[9] = 0 + '0';
-			scoreMsg[10] = ' ';
-			lcd_print_stringXY(scoreMsg,2,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+			scoreMsg1[0] = 0 + '0';
+			scoreMsg1[1] = ' ';
+			lcd_print_stringXY(scoreMsg1,6,17,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+			
+			eeprom_byte_write(I2C1_BASE, 508, 0);
+			scoreMsg2[0] = 0 + '0';
+			scoreMsg2[1] = ' ';
+			lcd_print_stringXY(scoreMsg2,6,18,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+			
+			eeprom_byte_write(I2C1_BASE, 516, 0);
+			scoreMsg3[0] = 0 + '0';
+			scoreMsg3[1] = ' ';
+			lcd_print_stringXY(scoreMsg3,6,19,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
 		}
 	}
 
@@ -594,11 +628,20 @@ int main(void)
 			lcd_draw_image(45, maxScoreWidthPixels, 35, maxScoreHeightPixels, maxScoreBitmap, LCD_COLOR_BLUE2, LCD_COLOR_BLACK);
 		}
 		
-		eeprom_byte_read(I2C1_BASE, 500, &bestScore);
+		eeprom_byte_read(I2C1_BASE, 500, &bestScore1);
+		eeprom_byte_read(I2C1_BASE, 508, &bestScore2);
+		eeprom_byte_read(I2C1_BASE, 516, &bestScore3);
 		
-		// Save the highest score to the eeprom
-		if (bestScore < score) {
+		// Save the highest scores to the eeprom
+		if (bestScore1 < score) {
 			eeprom_byte_write(I2C1_BASE, 500, score);
+			eeprom_byte_write(I2C1_BASE, 508, bestScore1);
+			eeprom_byte_write(I2C1_BASE, 516, bestScore2);
+		} else if (bestScore2 < score) {
+			eeprom_byte_write(I2C1_BASE, 508, score);
+			eeprom_byte_write(I2C1_BASE, 516, bestScore2);
+		} else if (bestScore3 < score) {
+			eeprom_byte_write(I2C1_BASE, 516, score);
 		}
 		
 		// Play gameOver sound
